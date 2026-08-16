@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: logiai-postgres
+    restart: unless-stopped
+
+    environment:
+      POSTGRES_USER: logiai
+      POSTGRES_PASSWORD: logiai
+      POSTGRES_DB: logiai
+
+    ports:
+      - "5432:5432"
+
+    volumes:
+      - postgres_data:/var/lib/postgresql
+
+volumes:
+  postgres_data:
