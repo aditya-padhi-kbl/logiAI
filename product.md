@@ -519,13 +519,9 @@ User
 AI Agent
  │
  ├── getShipment()
- │
  ├── getShipmentEvents()
- │
  ├── getCarrierPerformance()
- │
  ├── getRouteInformation()
- │
  └── getWarehouseStatus()
  │
  ▼
@@ -570,7 +566,7 @@ Example:
 
 All AI responses must be structured.
 
-The backend should validate the AI output before sending it to the frontend.
+The ASP.NET Core backend should validate the AI output before sending it to the frontend. AI output should be represented using strongly typed C# models/records and validated against the expected schema before it is treated as an operational result.
 
 Example:
 
@@ -610,7 +606,7 @@ The frontend should be able to render this without parsing arbitrary prose.
 
 The AI does not directly access PostgreSQL.
 
-It accesses controlled application tools.
+It accesses controlled application tools exposed by the ASP.NET Core backend.
 
 ## Read tools
 
@@ -697,18 +693,18 @@ ARRIVED_AT_WAREHOUSE
 DELAYED
 ```
 
-The MVP will use Server-Sent Events (SSE).
+The MVP will use Server-Sent Events (SSE) from ASP.NET Core.
 
 Example:
 
 ```text
-Backend
-   │
-   │ SSE
-   ▼
+ASP.NET Core
+      │
+      │ SSE
+      ▼
 Next.js
-   │
-   ▼
+      │
+      ▼
 Control Tower
 ```
 
@@ -763,7 +759,7 @@ The 30-day MVP includes:
 - Root-cause analysis
 - Structured AI responses
 - Recommendations
-- Tool calling
+- Tool calling through the ASP.NET Core backend
 
 ### Actions
 
@@ -778,6 +774,14 @@ The 30-day MVP includes:
 
 - Shipment event simulation
 - SSE updates
+
+### Platform
+
+- Next.js frontend
+- ASP.NET Core backend
+- EF Core data access
+- PostgreSQL persistence
+- Groq for AI inference
 
 ---
 
@@ -822,7 +826,7 @@ The MVP is successful when an operator can complete the following workflow:
 5. Ask:
    "Why is this shipment at risk?"
 
-6. AI retrieves relevant operational data
+6. AI retrieves relevant operational data through controlled backend tools
 
 7. AI produces structured analysis
 
@@ -862,7 +866,7 @@ Risk calculations, shipment states, and operational actions should not depend so
 
 ## 3. Structured AI over text-only AI
 
-AI responses should be machine-readable and validated.
+AI responses should be machine-readable and validated using strongly typed backend models.
 
 ---
 
