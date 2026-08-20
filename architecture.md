@@ -3,8 +3,10 @@
 ## Technology
 
 - Next.js + TypeScript frontend
-- C# / .NET 10 / ASP.NET Core backend
-- EF Core
+- Python 3.13+ / FastAPI backend
+- Pydantic v2 for API and AI contracts
+- SQLAlchemy 2.x for persistence
+- Alembic for database migrations
 - PostgreSQL
 - Groq for structured AI reasoning and tool calling
 - SSE for realtime updates
@@ -17,9 +19,9 @@ Next.js
    │
    │ REST + SSE
    ▼
-ASP.NET Core
+FastAPI / Python
    │
-   ├── API endpoints
+   ├── API routes
    ├── Application services
    ├── Deterministic risk engine
    ├── AI tool registry
@@ -27,7 +29,7 @@ ASP.NET Core
    └── Action executor
           │
           ▼
-       EF Core
+     SQLAlchemy 2.x
           │
           ▼
       PostgreSQL
@@ -36,13 +38,13 @@ ASP.NET Core
 ## Layering
 
 ```text
-HTTP / Minimal APIs
+HTTP / FastAPI routes
         ↓
 Application Services
         ↓
 Domain logic
         ↓
-EF Core / persistence
+Repositories / SQLAlchemy
         ↓
 PostgreSQL
 ```
@@ -56,7 +58,7 @@ AI Tool Registry
     ↓
 Application Services
     ↓
-EF Core
+Repositories / SQLAlchemy
     ↓
 PostgreSQL
 ```
@@ -79,22 +81,23 @@ A shipment has `senderId` and `receiverId`, both referencing `Party`. Sender/rec
 
 ```text
 backend/
-├── Api/
-├── Application/
-│   ├── Shipments/
-│   ├── Carriers/
-│   ├── Warehouses/
-│   ├── Routes/
-│   ├── Risk/
-│   └── Ai/
-├── Domain/
-├── Infrastructure/
-│   ├── Persistence/
-│   └── Groq/
-└── Program.cs
+├── app/
+│   ├── api/
+│   │   └── routes/
+│   ├── core/
+│   ├── db/
+│   ├── models/
+│   ├── schemas/
+│   ├── repositories/
+│   ├── services/
+│   └── main.py
+├── migrations/
+├── tests/
+├── pyproject.toml
+└── README.md
 ```
 
-Start with a modular monolith. Do not introduce microservices for the 30-day MVP.
+Keep the backend as a modular monolith for the 30-day MVP. Do not introduce microservices just for the sake of demonstrating them.
 
 ## API design
 
@@ -112,6 +115,20 @@ GET /api/shipments/at-risk
 ```
 
 AI endpoints will be added after the deterministic APIs are stable.
+
+## Dependency injection
+
+FastAPI dependencies provide request-scoped access to infrastructure such as the database session and authenticated user context. Business services should remain independent of HTTP concerns where practical.
+
+```text
+FastAPI dependency
+       ↓
+Application service
+       ↓
+Repository
+       ↓
+SQLAlchemy session
+```
 
 ## Risk engine
 
@@ -152,7 +169,7 @@ Write tools require explicit human approval.
 
 ## Structured AI contract
 
-The backend validates model output before returning it to Next.js. Use discriminated response types such as:
+The backend validates model output with Pydantic models before returning it to Next.js. Use discriminated response types such as:
 
 ```text
 risk_analysis
@@ -168,7 +185,7 @@ The frontend should render structured data rather than parse free-form AI prose.
 Shipment events are simulated in development and published through SSE:
 
 ```text
-Event simulator → ASP.NET Core → SSE → Next.js
+Event simulator → FastAPI → SSE → Next.js
 ```
 
 ## Data strategy
@@ -178,10 +195,11 @@ Use relational tables for core entities and JSONB for flexible event metadata an
 ## Security principles
 
 - Never expose the Groq API key to Next.js.
-- Validate all API inputs at the boundary.
+- Validate all API inputs at the boundary with Pydantic.
 - Authorize consequential actions before execution.
 - Record AI recommendations and action approvals in an audit trail.
 - Keep database access inside the backend.
+- Do not let LLM-generated identifiers or filters bypass application-level authorization.
 
 ## Why a modular monolith?
 
