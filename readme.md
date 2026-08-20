@@ -26,16 +26,16 @@ The AI is an operational copilot, not the source of truth. Operational facts, ri
 Next.js
    │ REST + SSE
    ▼
-ASP.NET Core / C#
-   ├── APIs
-   ├── Application Services
+FastAPI / Python
+   ├── API routes
+   ├── Application services
    ├── Risk Engine
    ├── AI Tool Registry
    ├── Groq Integration
    └── Action Executor
           │
           ▼
-       EF Core
+      SQLAlchemy 2.x
           │
           ▼
       PostgreSQL
@@ -44,7 +44,7 @@ ASP.NET Core / C#
 AI accesses controlled application tools rather than PostgreSQL directly:
 
 ```text
-Groq Agent → AI Tools → Application Services → EF Core → PostgreSQL
+Groq Agent → AI Tools → Application Services → SQLAlchemy → PostgreSQL
 ```
 
 See [`architecture.md`](./architecture.md) for the detailed technical design.
@@ -61,13 +61,13 @@ See [`architecture.md`](./architecture.md) for the detailed technical design.
 
 ### Backend
 
-- C#
-- .NET 10
-- ASP.NET Core
-- Minimal APIs
-- Dependency Injection
-- EF Core
-- FluentValidation where explicit validators are useful
+- Python 3.13+
+- FastAPI
+- Pydantic v2
+- SQLAlchemy 2.x
+- Alembic
+- asyncpg
+- pytest
 
 ### Data / AI
 
@@ -77,6 +77,12 @@ See [`architecture.md`](./architecture.md) for the detailed technical design.
 - Tool calling
 - SSE
 - Docker / Docker Compose
+
+### Python tooling
+
+- `uv` for dependency and environment management
+- Ruff for linting/formatting
+- Pytest for tests
 
 ## Domain model
 
@@ -153,7 +159,7 @@ AI responses are validated before reaching Next.js. Example:
 }
 ```
 
-This lets the UI render cards, tables, evidence, risk indicators, and actions without parsing arbitrary prose.
+Pydantic models validate these contracts before they become operational results. The UI renders cards, tables, evidence, risk indicators, and actions without parsing arbitrary prose.
 
 ## Risk engine
 
@@ -175,7 +181,7 @@ Operational Data → Risk Engine → Risk Score → Groq → Explanation + Recom
 ```text
 Event Simulator
       ↓
-ASP.NET Core
+FastAPI
       ↓ SSE
 Next.js Control Tower
 ```
@@ -199,7 +205,7 @@ The hero scenario is `TRK-1829`, which combines multiple risk factors and demons
 
 ## 30-day plan
 
-1. **Foundation:** C#/.NET, ASP.NET Core, EF Core, PostgreSQL, domain model and migrations.
+1. **Foundation:** Python, FastAPI, Pydantic, SQLAlchemy, PostgreSQL, domain model and migrations.
 2. **Control Tower:** APIs, Next.js dashboard, shipment details, events and deterministic risk engine.
 3. **AI:** Groq, structured outputs, tool registry, investigation and recommendations.
 4. **Realtime + Actions:** SSE, event simulator, approval workflow, action execution and audit.
@@ -215,8 +221,8 @@ The 30-day MVP does not include real carrier integrations, GPS tracking, mobile 
 
 - [`product.md`](./product.md) — product requirements and MVP scope
 - [`architecture.md`](./architecture.md) — backend and system architecture
-- [`docs/30-day-roadmap.md`](./docs/30-day-roadmap.md) — implementation and C# learning plan
+- [`docs/30-day-roadmap.md`](./docs/30-day-roadmap.md) — implementation and Python/AI learning plan
 
 ## Learning objective
 
-The project is intentionally built with C#/.NET so it doubles as practical .NET interview preparation. Key concepts include C# types and generics, LINQ, async/await, dependency injection, ASP.NET Core, EF Core, transactions, concurrency, REST API design, SSE, testing, observability, and AI tool orchestration.
+The project is intentionally built with Python/FastAPI so it doubles as practical backend and AI engineering preparation. Key concepts include Python typing, Pydantic, async/await, FastAPI dependency injection, SQLAlchemy, Alembic, transactions, concurrency, REST API design, SSE, testing, observability, and AI tool orchestration.
