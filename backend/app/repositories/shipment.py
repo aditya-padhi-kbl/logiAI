@@ -2,7 +2,7 @@ from typing import Any, cast
 from uuid import UUID
 
 from app.models.shipment import Shipment
-from sqlalchemy.orm import QueryableAttribute, selectinload
+from sqlalchemy.orm import QueryableAttribute, joinedload
 from sqlmodel import select
 from sqlmodel.ext.asyncio.session import AsyncSession
 
@@ -26,7 +26,7 @@ class ShipmentRepository:
             select(Shipment)
             .where(Shipment.id == shipment_id)
             .options(
-                selectinload(rel(Shipment.sender)), selectinload(rel(Shipment.receiver))
+                joinedload(rel(Shipment.sender)), joinedload(rel(Shipment.receiver))
             )
         )
         result = await self.session.exec(statement)
