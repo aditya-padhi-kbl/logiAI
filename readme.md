@@ -64,7 +64,7 @@ See [`architecture.md`](./architecture.md) for the detailed technical design.
 - Python 3.13+
 - FastAPI
 - Pydantic v2
-- SQLAlchemy 2.x
+- SQLModel
 - Alembic
 - asyncpg
 - pytest
