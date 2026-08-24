@@ -1,19 +1,12 @@
-from typing import Annotated, Any, cast
+from typing import Annotated
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException
-from sqlalchemy.orm import QueryableAttribute, selectinload
-from sqlmodel import select
-from sqlmodel.ext.asyncio.session import AsyncSession
 
-from app.db.dependencies import get_session
+from app.dependencies.shipment import get_shipment_service
 from app.models.shipment import Shipment
 from app.schemas.shipment import ShipmentCreate, ShipmentResponse
-
-
-def rel(attr: Any) -> QueryableAttribute[Any]:
-    return cast(QueryableAttribute[Any], attr)
-
+from app.service.shipment import ShipmentService
 
 router = APIRouter(
     prefix="/shipments",
@@ -24,36 +17,18 @@ router = APIRouter(
 @router.post("", response_model=ShipmentResponse)
 async def create_shipment(
     shipment_data: ShipmentCreate,
-    session: Annotated[AsyncSession, Depends(get_session)],
+    service: Annotated[ShipmentService, Depends(get_shipment_service)],
 ) -> Shipment:
-    shipment = Shipment(
-        tracking_number=shipment_data.tracking_number,
-        sender_id=shipment_data.sender_id,
-        receiver_id=shipment_data.receiver_id,
-    )
-    session.add(shipment)
-    await session.commit()
-    await session.refresh(shipment)
-
-    statement = select(Shipment).where(Shipment.id == shipment.id)
-    result = await session.exec(statement)
-    return result.one()
+    shipment = await service.create_shipment(shipment_data)
+    return shipment
 
 
 @router.get("/{shipment_id}", response_model=ShipmentResponse)
 async def get_shipment(
-    shipment_id: UUID, session: Annotated[AsyncSession, Depends(get_session)]
+    shipment_id: UUID,
+    service: Annotated[ShipmentService, Depends(get_shipment_service)],
 ) -> Shipment:
-    statement = (
-        select(Shipment)
-        .options(
-            selectinload(rel(Shipment.sender)),
-            selectinload(rel(Shipment.receiver)),
-        )
-        .where(Shipment.id == shipment_id)
-    )
-    result = await session.exec(statement)
-    shipment = result.one_or_none()
+    shipment = await service.get_shipment(shipment_id)
     if shipment is None:
         raise HTTPException(status_code=404, detail="Shipment not found")
     return shipment

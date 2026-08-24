@@ -18,11 +18,13 @@ class Shipment(SQLModel, table=True):
     sender: Party | None = Relationship(
         sa_relationship_kwargs={
             "foreign_keys": "[Shipment.sender_id]",
+            "lazy": "selectin",
         }
     )
 
     receiver: Party | None = Relationship(
         sa_relationship_kwargs={
             "foreign_keys": "[Shipment.receiver_id]",
+            "lazy": "selectin",
         }
     )
