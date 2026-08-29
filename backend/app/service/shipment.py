@@ -2,7 +2,7 @@ from uuid import UUID
 
 from app.models.shipment import Shipment
 from app.repositories.shipment import ShipmentRepository
-from app.schemas.shipment import ShipmentCreate
+from app.schemas.shipment import ShipmentCreate, ShipmentResponse
 
 
 class ShipmentService:
@@ -22,5 +22,6 @@ class ShipmentService:
 
     async def list_shipment(
         self, *, page: int, page_size: int, status: str | None = None
-    ) -> tuple[list[Shipment], int]:
-        return await self.repository.list(page=page, page_size=page_size, status=status)
+    ) -> tuple[list[ShipmentResponse], int]:
+        shipments, total = await self.repository.list(page=page, page_size=page_size, status=status)
+        return  shipments, total
