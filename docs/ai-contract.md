@@ -1,4 +1,10 @@
-# AI Response
+# LogiAI AI Contract
+
+The AI layer uses structured, machine-readable responses. The active Bun/Elysia backend validates model output with Zod before returning it to Next.js.
+
+## AI response types
+
+The response contract is a discriminated union keyed by `type`:
 
 ```typescript
 type AIResponse =
@@ -9,6 +15,8 @@ type AIResponse =
   | ActionConfirmationResponse;
 ```
 
+### Text response
+
 ```typescript
 interface TextResponse {
   type: "text";
@@ -16,14 +24,12 @@ interface TextResponse {
 }
 ```
 
-# Shipment Table
+### Shipment table
 
 ```typescript
 interface ShipmentTableResponse {
   type: "shipment_table";
-
   title: string;
-
   shipments: {
     id: string;
     status: ShipmentStatus;
@@ -33,101 +39,111 @@ interface ShipmentTableResponse {
 }
 ```
 
-# Risk Analysis
+### Risk analysis
 
 ```typescript
 interface RiskAnalysisResponse {
   type: "risk_analysis";
-
   shipmentId: string;
   riskScore: number;
-
   reasons: {
     factor: string;
     impact: "LOW" | "MEDIUM" | "HIGH";
     explanation: string;
   }[];
-
   recommendation?: string;
 }
 ```
 
-Recommendation
+### Recommendation
 
 ```typescript
 interface RecommendationResponse {
   type: "recommendation";
-
   title: string;
-
   actions: {
     type: "REROUTE_SHIPMENT" | "NOTIFY_CUSTOMER" | "ESCALATE_CARRIER";
-
     shipmentId: string;
-
     reason: string;
   }[];
 }
 ```
 
-# Action Confirmation
+### Action confirmation
 
 ```typescript
 interface ActionConfirmationResponse {
   type: "action_confirmation";
-
   actionId: string;
-
   action: {
     type: string;
     description: string;
   };
-
   requiresApproval: true;
 }
 ```
 
-# Defining AI Questions
+## Validation boundary
 
-First version only need to answer these
+TypeScript types describe the compile-time shape. Zod schemas enforce the runtime contract for untrusted model output.
 
-### Question 1
+```text
+Groq
+  ↓
+Raw model output
+  ↓
+Zod validation
+  ↓
+Validated AIResponse
+  ↓
+Elysia API
+  ↓
+Next.js
+```
 
-# What needs my attention
+Invalid model output must not be treated as an operational fact. The backend should return a controlled error or use a safe fallback.
 
-```code
+## Initial AI questions
+
+### What needs my attention?
+
+```text
 shipment_table
 ```
 
-# Which shipments are at risk?
+### Which shipments are at risk?
 
-```code
+```text
 shipment_table
 ```
 
-# Why is shipment S1829 delayed?
+### Why is shipment TRK-1829 delayed?
 
-```code
+```text
 risk_analysis
 ```
 
-# What should I do about S1829?
+### What should I do about TRK-1829?
 
-```code
+```text
 recommendation
 ```
 
-# Reroute S1829.
+### Reroute TRK-1829.
 
-```code
+```text
 action_confirmation
 ```
 
-# Defining AI Tools
+The final action still requires explicit human approval before execution.
 
-The LLM should have access to controlled tools:
+## AI tools
 
-```
+The LLM has access to controlled application tools. Tools must call application services rather than Kysely directly.
+
+### Read tools
+
+```text
 searchShipments
 getShipment
 getShipmentEvents
@@ -137,46 +153,37 @@ getRouteInformation
 getAtRiskShipments
 ```
 
-Later:
-
-```
-rerouteShipment
-notifyCustomer
-escalateCarrier
-```
-
-# Notice the distinction:
-
-### Read tools
-
-```
-searchShipments
-getShipment
-getCarrierPerformance
-```
-
 ### Write tools
 
-# Write tools require human approval.
-
-```
+```text
 rerouteShipment
 notifyCustomer
 escalateCarrier
 ```
 
-13. Define the screens
+Write tools require human approval.
 
-### Only four
+## Tool boundary
 
-- /control-tower
-  `Dashboard`
+```text
+Groq Agent
+    ↓
+AI Tool Registry
+    ↓
+Application Services
+    ↓
+Repositories / Kysely
+    ↓
+PostgreSQL
+```
 
-- /shipments/:id
-  `Shipment details`
+The LLM never receives database credentials or unrestricted database access.
 
-- /investigation/:id
-  `AI investigation`
+## Screens
 
-- /actions/:id
-  `Action approval`
+The initial product has four primary screens:
+
+- `/control-tower` — Dashboard
+- `/shipments/:id` — Shipment details
+- `/investigation/:id` — AI investigation
+- `/actions/:id` — Action approval
