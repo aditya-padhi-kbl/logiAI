@@ -10,8 +10,17 @@ class ShipmentService:
         self.repository = repository
 
     async def create_shipment(self, data: ShipmentCreate) -> Shipment:
-        shipment = Shipment(tracking_number=data.tracking_number, sender_id=data.sender_id, receiver_id=data.receiver_id)
+        shipment = Shipment(
+            tracking_number=data.tracking_number,
+            sender_id=data.sender_id,
+            receiver_id=data.receiver_id,
+        )
         return await self.repository.create(shipment)
 
     async def get_shipment(self, shipment_id: UUID) -> Shipment | None:
         return await self.repository.get_by_id(shipment_id)
+
+    async def list_shipment(
+        self, *, page: int, page_size: int, status: str | None = None
+    ) -> tuple[list[Shipment], int]:
+        return await self.repository.list(page=page, page_size=page_size, status=status)

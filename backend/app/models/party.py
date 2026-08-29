@@ -2,8 +2,6 @@ import uuid
 
 from sqlmodel import Field, SQLModel
 
-from app.db.init_db import init_db
-
 
 class Party(SQLModel, table=True):
     id: uuid.UUID = Field(

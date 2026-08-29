@@ -1,20 +1,19 @@
 from typing import Annotated
 
 from fastapi import APIRouter, Depends
-from sqlmodel.ext.asyncio.session import AsyncSession
 
-from app.db.dependencies import get_session
+from app.dependencies.party import get_party_service
 from app.models.party import Party
+from app.schemas.party import PartyCreate, PartyResponse
+from app.service.party import PartyService
 
 router = APIRouter(prefix="/parties", tags=["Parties"])
 
 
-@router.post("")
+@router.post("", response_model=PartyResponse)
 async def create_party(
-    party: Party, session: Annotated[AsyncSession, Depends(get_session)]
+    data: PartyCreate, service: Annotated[PartyService, Depends(get_party_service)]
 ) -> Party:
-    session.add(party)
-    await session.commit()
-    await session.refresh(party)
-    return party
+    party = await service.create_party(data)
 
+    return party

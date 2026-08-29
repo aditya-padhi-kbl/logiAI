@@ -9,7 +9,6 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 def get_shipment_service(
     session: Annotated[AsyncSession, Depends(get_session)],
-    # session: AsyncSession = Depends(get_session),
 ) -> ShipmentService:
     repository = ShipmentRepository(session)
     return ShipmentService(repository)

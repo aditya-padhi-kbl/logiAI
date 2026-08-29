@@ -8,9 +8,11 @@ class ShipmentCreate(SQLModel):
     sender_id: UUID
     receiver_id: UUID
 
+
 class PartyResponse(SQLModel):
     id: UUID
     name: str
+
 
 class ShipmentResponse(SQLModel):
     id: UUID
@@ -18,3 +20,10 @@ class ShipmentResponse(SQLModel):
     status: str
     sender: PartyResponse
     receiver: PartyResponse
+
+
+class ShipmentListResponse(SQLModel):
+    items: list[ShipmentResponse]
+    page: int
+    page_size: int
+    total: int
