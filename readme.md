@@ -26,7 +26,7 @@ The AI is an operational copilot, not the source of truth. Operational facts, ri
 Next.js
    │ REST + SSE
    ▼
-FastAPI / Python
+Bun / Elysia
    ├── API routes
    ├── Application services
    ├── Risk Engine
@@ -35,7 +35,7 @@ FastAPI / Python
    └── Action Executor
           │
           ▼
-      SQLAlchemy 2.x
+       Kysely
           │
           ▼
       PostgreSQL
@@ -44,7 +44,7 @@ FastAPI / Python
 AI accesses controlled application tools rather than PostgreSQL directly:
 
 ```text
-Groq Agent → AI Tools → Application Services → SQLAlchemy → PostgreSQL
+Groq Agent → AI Tools → Application Services → Kysely → PostgreSQL
 ```
 
 See [`architecture.md`](./architecture.md) for the detailed technical design.
@@ -61,13 +61,14 @@ See [`architecture.md`](./architecture.md) for the detailed technical design.
 
 ### Backend
 
-- Python 3.13+
-- FastAPI
-- Pydantic v2
-- SQLModel
-- Alembic
-- asyncpg
-- pytest
+- Bun
+- TypeScript
+- Elysia
+- Zod for request, response, and AI contract validation
+- Kysely for type-safe SQL and database access
+- Kysely migrations
+
+The previous Python implementation is retained under [`backend_python`](./backend_python) as a reference implementation. It is not the active backend.
 
 ### Data / AI
 
@@ -77,12 +78,6 @@ See [`architecture.md`](./architecture.md) for the detailed technical design.
 - Tool calling
 - SSE
 - Docker / Docker Compose
-
-### Python tooling
-
-- `uv` for dependency and environment management
-- Ruff for linting/formatting
-- Pytest for tests
 
 ## Domain model
 
@@ -159,7 +154,7 @@ AI responses are validated before reaching Next.js. Example:
 }
 ```
 
-Pydantic models validate these contracts before they become operational results. The UI renders cards, tables, evidence, risk indicators, and actions without parsing arbitrary prose.
+Zod schemas validate these contracts before they become operational results. The UI renders cards, tables, evidence, risk indicators, and actions without parsing arbitrary prose.
 
 ## Risk engine
 
@@ -181,7 +176,7 @@ Operational Data → Risk Engine → Risk Score → Groq → Explanation + Recom
 ```text
 Event Simulator
       ↓
-FastAPI
+Bun / Elysia
       ↓ SSE
 Next.js Control Tower
 ```
@@ -205,7 +200,7 @@ The hero scenario is `TRK-1829`, which combines multiple risk factors and demons
 
 ## 30-day plan
 
-1. **Foundation:** Python, FastAPI, Pydantic, SQLAlchemy, PostgreSQL, domain model and migrations.
+1. **Foundation:** Bun, Elysia, Zod, Kysely, PostgreSQL, domain model and migrations.
 2. **Control Tower:** APIs, Next.js dashboard, shipment details, events and deterministic risk engine.
 3. **AI:** Groq, structured outputs, tool registry, investigation and recommendations.
 4. **Realtime + Actions:** SSE, event simulator, approval workflow, action execution and audit.
@@ -221,8 +216,13 @@ The 30-day MVP does not include real carrier integrations, GPS tracking, mobile 
 
 - [`product.md`](./product.md) — product requirements and MVP scope
 - [`architecture.md`](./architecture.md) — backend and system architecture
-- [`docs/30-day-roadmap.md`](./docs/30-day-roadmap.md) — implementation and Python/AI learning plan
+- [`docs/architecture.md`](./docs/architecture.md) — detailed architecture notes
+- [`docs/ai-contract.md`](./docs/ai-contract.md) — structured AI response and tool contracts
+- [`docs/30-day-roadmap.md`](./docs/30-day-roadmap.md) — implementation and AI learning plan
+- [`docs/non-goals.md`](./docs/non-goals.md) — explicit MVP boundaries
 
 ## Learning objective
 
-The project is intentionally built with Python/FastAPI so it doubles as practical backend and AI engineering preparation. Key concepts include Python typing, Pydantic, async/await, FastAPI dependency injection, SQLAlchemy, Alembic, transactions, concurrency, REST API design, SSE, testing, observability, and AI tool orchestration.
+The project is intentionally built with Bun, TypeScript, Elysia, Kysely and Zod to demonstrate modern TypeScript backend engineering alongside AI engineering. Key concepts include TypeScript typing, runtime validation, dependency composition, SQL and query design, transactions, concurrency, REST API design, SSE, testing, observability, and AI tool orchestration.
+
+The retained [`backend_python`](./backend_python) implementation provides a reference for the original Python/FastAPI architecture and can be used to compare implementation choices across ecosystems.
