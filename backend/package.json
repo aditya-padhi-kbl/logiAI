@@ -2,7 +2,22 @@
   "name": "logiai-backend",
   "private": true,
   "type": "module",
-  "scripts": {"dev": "bun --watch src/index.ts", "start": "bun src/index.ts", "migrate": "bun src/db/migrate.ts", "typecheck": "tsc --noEmit"},
-  "dependencies": {"elysia": "^1.4.30", "kysely": "^0.29.5", "pg": "^8.16.3", "zod": "^4.4.3"},
-  "devDependencies": {"@types/bun": "latest", "@types/node": "latest", "@types/pg": "latest", "typescript": "latest"}
+  "scripts": {
+    "dev": "bun --watch src/index.ts",
+    "start": "bun src/index.ts",
+    "migrate": "bun src/db/migrate.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "elysia": "^1.4.30",
+    "kysely": "^0.29.5",
+    "pg": "^8.16.3",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/node": "latest",
+    "@types/pg": "latest",
+    "typescript": "latest"
+  }
 }

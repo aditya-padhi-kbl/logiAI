@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="515c54ab-1ad3-4b07-b96d-ea0fc31f9825" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/logiAI.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/logiAI.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/logiai-backend.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/ruff.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/app.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/db/migrate.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/migrate.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/db/migrations/001_initial.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/migrations/001_initial.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/db/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/repositories/party.repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/repositories/party.repository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/repositories/shipment.repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/repositories/shipment.repository.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/routes/party.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/party.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/routes/shipment.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/shipment.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/schemas/party.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/schemas/party.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/schemas/shipment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/schemas/shipment.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/services/party.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/party.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/services/shipment.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/shipment.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/.python-version" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/README.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/api/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/api/parties.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/api/shipments.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/db/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/db/dependencies.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/db/init_db.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/db/session.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/dependencies/party.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/dependencies/shipment.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/main.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/models/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/models/party.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/models/shipment.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/repositories/party.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/repositories/shipment.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/schemas/__init__.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/schemas/health.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/schemas/party.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/schemas/shipment.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/service/party.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/app/service/shipment.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/pyproject.toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend_python/uv.lock" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "associatedIndex": 2,
+  "fromUser": false
+}]]></component>
+  <component name="ProjectId" id="3IcwjeXPRiXouTMO214qtFDt0cz" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Bun.index.ts.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "git-widget-placeholder": "main",
+    "javascript.preferred.runtime.type.id": "bun",
+    "last_opened_file_path": "/Users/adityapadhi/code/logiAI",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "bun",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "ts.external.directory.path": "/Users/adityapadhi/Library/Caches/JetBrains/WebStorm2026.2/ts-go-native-preview/v7.0.0-dev.jetbrains.20260702.4/node_modules/@typescript/native-preview-darwin-arm64/lib"
+  }
+}]]></component>
+  <component name="RunManager">
+    <configuration name="index.ts" type="BunRunConfiguration" temporary="true" nameIsGenerated="true">
+      <option name="program" value="$PROJECT_DIR$/backend/src/index.ts" />
+      <option name="workingDirectory" value="$PROJECT_DIR$/backend/src" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Bun.index.ts" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-WS-262.9437.145" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="515c54ab-1ad3-4b07-b96d-ea0fc31f9825" name="Changes" comment="" />
+      <created>1788077300833</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1788077300833</updated>
+      <workItem from="1788077302021" duration="3875000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/backend/src/services/shipment.service.ts</url>
+          <line>31</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/backend/src/services/shipment.service.ts</url>
+          <line>30</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/backend/src/repositories/shipment.repository.ts</url>
+          <line>49</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
