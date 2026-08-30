@@ -424,7 +424,7 @@ Example evidence:
 
 AI responses must be structured and validated before reaching the frontend.
 
-The backend uses **Pydantic models** to validate AI contracts. The frontend renders structured fields rather than parsing arbitrary model prose.
+The backend uses **Zod schemas** to validate AI contracts. The frontend renders structured fields rather than parsing arbitrary model prose.
 
 Example:
 
@@ -460,7 +460,7 @@ Example:
 
 ## 12. AI Tools
 
-The AI does **not** access PostgreSQL directly. It accesses controlled application tools exposed by the FastAPI backend.
+The AI does **not** access PostgreSQL directly. It accesses controlled application tools exposed by the Elysia backend.
 
 ### Read tools
 
@@ -493,7 +493,7 @@ AI Tool Registry
     ↓
 Application Services
     ↓
-Repositories / SQLAlchemy
+Repositories / Kysely
     ↓
 PostgreSQL
 ```
@@ -553,7 +553,7 @@ The MVP uses **Server-Sent Events (SSE)**:
 ```text
 Event Simulator
       ↓
-FastAPI
+Bun / Elysia
       ↓ SSE
 Next.js
       ↓
@@ -609,7 +609,7 @@ This is a core requirement for an operational system where AI influences consequ
 - Root-cause analysis
 - Structured AI responses
 - Recommendations
-- Tool calling through the FastAPI backend
+- Tool calling through the Elysia backend
 
 ### Actions
 
@@ -628,12 +628,14 @@ This is a core requirement for an operational system where AI influences consequ
 ### Platform
 
 - Next.js frontend
-- Python / FastAPI backend
-- Pydantic validation
-- SQLAlchemy 2.x data access
-- Alembic migrations
+- Bun / Elysia / TypeScript backend
+- Zod validation
+- Kysely data access
+- Kysely migrations
 - PostgreSQL persistence
 - Groq for AI inference
+
+The previous Python/FastAPI implementation is retained under `backend_python/` for reference only.
 
 ---
 
@@ -698,7 +700,7 @@ Risk calculations, shipment states, and operational actions should not depend so
 
 ### 3. Structured AI over text-only AI
 
-AI responses should be machine-readable and validated with Pydantic.
+AI responses should be machine-readable and validated with Zod.
 
 ### 4. Humans remain in control
 

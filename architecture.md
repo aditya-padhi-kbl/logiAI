@@ -3,14 +3,17 @@
 ## Technology
 
 - Next.js + TypeScript frontend
-- Python 3.13+ / FastAPI backend
-- Pydantic v2 for API and AI contracts
-- SQLAlchemy 2.x for persistence
-- Alembic for database migrations
+- Bun + TypeScript backend runtime
+- Elysia for HTTP APIs and SSE
+- Zod for request, response, and AI contract validation
+- Kysely for type-safe SQL and persistence
+- Kysely migrations for database schema changes
 - PostgreSQL
 - Groq for structured AI reasoning and tool calling
 - SSE for realtime updates
 - Docker for local infrastructure
+
+The previous Python implementation is retained under `backend_python/` as a reference implementation. `backend/` is the active backend.
 
 ## High-level architecture
 
@@ -19,7 +22,7 @@ Next.js
    │
    │ REST + SSE
    ▼
-FastAPI / Python
+Bun / Elysia
    │
    ├── API routes
    ├── Application services
@@ -29,7 +32,7 @@ FastAPI / Python
    └── Action executor
           │
           ▼
-     SQLAlchemy 2.x
+        Kysely
           │
           ▼
       PostgreSQL
@@ -38,13 +41,13 @@ FastAPI / Python
 ## Layering
 
 ```text
-HTTP / FastAPI routes
+HTTP / Elysia routes
         ↓
 Application Services
         ↓
 Domain logic
         ↓
-Repositories / SQLAlchemy
+Repositories / Kysely
         ↓
 PostgreSQL
 ```
@@ -58,7 +61,7 @@ AI Tool Registry
     ↓
 Application Services
     ↓
-Repositories / SQLAlchemy
+Repositories / Kysely
     ↓
 PostgreSQL
 ```
@@ -81,23 +84,28 @@ A shipment has `senderId` and `receiverId`, both referencing `Party`. Sender/rec
 
 ```text
 backend/
-├── app/
-│   ├── api/
-│   │   └── routes/
-│   ├── core/
+├── src/
+│   ├── config/
 │   ├── db/
-│   ├── models/
+│   │   └── migrations/
+│   ├── routes/
 │   ├── schemas/
-│   ├── repositories/
 │   ├── services/
-│   └── main.py
-├── migrations/
-├── tests/
-├── pyproject.toml
+│   └── repositories/
+├── package.json
+├── tsconfig.json
 └── README.md
 ```
 
 Keep the backend as a modular monolith for the 30-day MVP. Do not introduce microservices just for the sake of demonstrating them.
+
+The Python reference implementation lives under:
+
+```text
+backend_python/
+```
+
+It is intentionally kept separate from the active TypeScript backend.
 
 ## API design
 
@@ -116,19 +124,39 @@ GET /api/shipments/at-risk
 
 AI endpoints will be added after the deterministic APIs are stable.
 
-## Dependency injection
+## Dependency composition
 
-FastAPI dependencies provide request-scoped access to infrastructure such as the database session and authenticated user context. Business services should remain independent of HTTP concerns where practical.
+Elysia does not require a framework-managed dependency-injection container for this application. Infrastructure dependencies are created at application startup and composed explicitly into repositories and services.
 
 ```text
-FastAPI dependency
+Application startup
        ↓
-Application service
+Kysely database instance
        ↓
-Repository
+Repositories
        ↓
-SQLAlchemy session
+Application services
+       ↓
+Elysia routes
 ```
+
+Business services remain independent of HTTP concerns where practical.
+
+## Validation
+
+Zod is the runtime validation boundary for external and model-generated data.
+
+```text
+HTTP / AI input
+      ↓
+Zod schema
+      ↓
+Validated TypeScript value
+      ↓
+Application service
+```
+
+TypeScript provides compile-time safety; Zod provides runtime validation for untrusted data.
 
 ## Risk engine
 
@@ -169,12 +197,13 @@ Write tools require explicit human approval.
 
 ## Structured AI contract
 
-The backend validates model output with Pydantic models before returning it to Next.js. Use discriminated response types such as:
+The backend validates model output with Zod schemas before returning it to Next.js. Use discriminated response types such as:
 
 ```text
+text
 risk_analysis
 recommendation
-shipment_list
+shipment_table
 action_confirmation
 ```
 
@@ -185,7 +214,7 @@ The frontend should render structured data rather than parse free-form AI prose.
 Shipment events are simulated in development and published through SSE:
 
 ```text
-Event simulator → FastAPI → SSE → Next.js
+Event simulator → Bun / Elysia → SSE → Next.js
 ```
 
 ## Data strategy
@@ -195,7 +224,7 @@ Use relational tables for core entities and JSONB for flexible event metadata an
 ## Security principles
 
 - Never expose the Groq API key to Next.js.
-- Validate all API inputs at the boundary with Pydantic.
+- Validate all API inputs at the boundary with Zod.
 - Authorize consequential actions before execution.
 - Record AI recommendations and action approvals in an audit trail.
 - Keep database access inside the backend.
@@ -204,3 +233,7 @@ Use relational tables for core entities and JSONB for flexible event metadata an
 ## Why a modular monolith?
 
 The project is intentionally a modular monolith because it provides the architecture benefits needed for a strong portfolio project without spending the 30-day schedule on distributed-systems infrastructure. Boundaries are kept explicit so individual modules can be extracted later if a real scale requirement appears.
+
+## Python reference implementation
+
+`backend_python/` contains the previous FastAPI/Python implementation. It is not part of the runtime path of the current application. Keeping it available makes the migration explicit and provides a useful reference when comparing Python and TypeScript backend approaches.
