@@ -4,3 +4,5 @@ __pycache__/
 .mypy_cache/
 .pytest_cache/
 .ruff_cache/
+/**/*.d.ts
+/**/node_modules

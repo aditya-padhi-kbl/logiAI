@@ -6,3 +6,4 @@ export const partyCreateSchema = z.object({
 });
 export const partyResponseSchema = z.object({ id: z.uuid(), name: z.string() });
 export type PartyCreate = z.infer<typeof partyCreateSchema>;
+

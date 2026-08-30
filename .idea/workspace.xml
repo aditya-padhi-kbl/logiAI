@@ -5,52 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="515c54ab-1ad3-4b07-b96d-ea0fc31f9825" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/logiAI.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/logiAI.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/logiai-backend.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/ruff.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.vscode/launch.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/bun.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend/bun.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/app.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/migrate.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/migrate.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/migrations/001_initial.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/migrations/001_initial.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/repositories/party.repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/repositories/party.repository.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/repositories/shipment.repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/repositories/shipment.repository.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/routes/party.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/party.routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/routes/shipment.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/shipment.routes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/schemas/party.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/schemas/party.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/schemas/shipment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/schemas/shipment.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/services/party.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/party.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/services/shipment.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/shipment.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/.python-version" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/api/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/api/parties.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/api/shipments.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/db/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/db/dependencies.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/db/init_db.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/db/session.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/dependencies/party.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/dependencies/shipment.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/models/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/models/party.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/models/shipment.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/repositories/party.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/repositories/shipment.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/schemas/__init__.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/schemas/health.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/schemas/party.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/schemas/shipment.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/service/party.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/app/service/shipment.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/pyproject.toml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend_python/uv.lock" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -115,12 +75,30 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1788077300833</updated>
-      <workItem from="1788077302021" duration="3875000" />
+      <workItem from="1788077302021" duration="6206000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+    <option name="exactExcludedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/backend/src/config/env.d.ts" />
+        <option value="$PROJECT_DIR$/backend/src/routes/party.routes.d.ts" />
+        <option value="$PROJECT_DIR$/backend/src/routes/shipment.routes.d.ts" />
+        <option value="$PROJECT_DIR$/backend/src/app.d.ts" />
+        <option value="$PROJECT_DIR$/backend/src/index.d.ts" />
+        <option value="$PROJECT_DIR$/backend/src/db/types.d.ts" />
+        <option value="$PROJECT_DIR$/backend/src/db/database.d.ts" />
+        <option value="$PROJECT_DIR$/backend/src/services/shipment.service.d.ts" />
+        <option value="$PROJECT_DIR$/backend/src/services/Base.service.d.ts" />
+        <option value="$PROJECT_DIR$/backend/src/services/party.service.d.ts" />
+        <option value="$PROJECT_DIR$/backend/src/schemas/party.d.ts" />
+        <option value="$PROJECT_DIR$/backend/src/schemas/shipment.d.ts" />
+        <option value="$PROJECT_DIR$/backend/src/repositories/shipment.repository.d.ts" />
+        <option value="$PROJECT_DIR$/backend/src/repositories/party.repository.d.ts" />
+      </list>
+    </option>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
