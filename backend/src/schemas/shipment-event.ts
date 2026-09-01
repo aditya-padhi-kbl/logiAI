@@ -1,27 +1,10 @@
-import {z} from 'zod';
-import {t} from  'elysia'
-import {ShipmentEvent} from "../consts/shipment.const";
+export const ShipmentEvent = {
+  CREATED: "CREATED",
+  PICKED_UP: "PICKED_UP",
+  IN_TRANSIT: "IN_TRANSIT",
+  DELAYED: "DELAYED",
+  DELIVERED: "DELIVERED",
+};
 
-
-const ShipmentEventCreateSchema = t.Object({
-    id: t.String({format: 'uuid'}),
-    shipment_id: t.String({format: 'uuid'}),
-    event_type: t.Enum(ShipmentEvent),
-    occurred_at: t.String({format: 'date-time'}),
-    location: t.String(),
-    description: t.Optional(t.String())
-})
-
-export const ShipmentEventResponseSchema = t.Object({
-    id: t.String({format: 'uuid'}),
-    shipment_id: t.String({format: 'uuid'}),
-    event_type: t.Enum(ShipmentEvent),
-    occurred_at: t.String({format: 'date-time'}),
-    location: t.String(),
-    description: t.Optional(t.String())
-})
-
-export const ShipmentEvent
-
-
-
+export type ShipmentEventKeys =keyof typeof ShipmentEvent;
+export type ShipmentEventValues = typeof ShipmentEvent[ShipmentEventKeys];

@@ -3,7 +3,6 @@ export const shipmentCreateSchema = t.Object({
   tracking_number: t.String({ minLength: 1, maxLength: 255 }),
   sender_id: t.String({ format: "uuid" }),
   receiver_id: t.String({ format: "uuid" }),
-  created_at: t.String({ format: "date-time" }),
 });
 export const shipmentResponseSchema = t.Object({
   id: t.String({ format: "uuid" }),

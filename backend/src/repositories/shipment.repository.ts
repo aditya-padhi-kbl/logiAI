@@ -1,10 +1,15 @@
 import { db } from "../db/database";
 import type { NewShipment, Shipment } from "../db/types";
-import { shipmentListResponseSchema } from "../schemas/shipment";
+import {
+  shipmentListResponseSchema,
+  shipmentResponseSchema,
+} from "../schemas/shipment";
 import { type Static } from "elysia";
 
 type _ShipmentListResponse = Static<typeof shipmentListResponseSchema>;
 type ShipmentListResponse = Omit<_ShipmentListResponse, "page" | "page_size">;
+type _ShipmentResponseSchema = Static<typeof shipmentResponseSchema>;
+
 export class ShipmentRepository {
   async create(input: NewShipment): Promise<Shipment> {
     return db
@@ -14,7 +19,7 @@ export class ShipmentRepository {
       .executeTakeFirstOrThrow();
   }
 
-  async getById(id: string) {
+  async getById(id: string): Promise<_ShipmentResponseSchema | undefined> {
     const row = await db
       .selectFrom("shipment")
       .innerJoin("party as sender", "sender.id", "shipment.sender_id")
@@ -27,6 +32,7 @@ export class ShipmentRepository {
         "sender.name as sender_name",
         "receiver.id as receiver_id",
         "receiver.name as receiver_name",
+        "shipment.created_at as created_at",
       ])
       .where("shipment.id", "=", id)
       .executeTakeFirst();
@@ -37,6 +43,7 @@ export class ShipmentRepository {
           status: row.status,
           sender: { id: row.sender_id, name: row.sender_name },
           receiver: { id: row.receiver_id, name: row.receiver_name },
+          created_at: row?.created_at ? row.created_at.toISOString() : null,
         }
       : undefined;
   }

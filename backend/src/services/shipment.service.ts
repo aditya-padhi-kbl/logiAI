@@ -1,8 +1,10 @@
 import { PartyRepository } from "../repositories/party.repository";
 import { ShipmentRepository } from "../repositories/shipment.repository";
-import type { ShipmentCreate } from "../schemas/shipment";
 import { Base } from "./Base.service";
-import { ShipmentEvent } from "../consts/shipment.const";
+import { NewShipment } from "../db/types";
+import {ShipmentEvent} from "../schemas/shipment-event";
+
+type ShipCreateSchema = Omit<NewShipment, "id" | "created_at" | "status">;
 
 export class ShipmentService extends Base {
   constructor(
@@ -11,7 +13,8 @@ export class ShipmentService extends Base {
   ) {
     super();
   }
-  async createShipment(data: ShipmentCreate) {
+
+  async createShipment(data: ShipCreateSchema) {
     const [sender, receiver] = await Promise.all([
       this.parties.getById(data.sender_id),
       this.parties.getById(data.receiver_id),

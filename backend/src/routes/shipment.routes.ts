@@ -1,5 +1,4 @@
-import { Elysia, t, type Static } from "elysia";
-import { z } from "zod";
+import { Elysia, t } from "elysia";
 import { PartyRepository } from "../repositories/party.repository";
 import { ShipmentRepository } from "../repositories/shipment.repository";
 import { ShipmentService } from "../services/shipment.service";
@@ -10,8 +9,6 @@ import {
   shipmentResponseSchema,
 } from "../schemas/shipment";
 
-type shipmentCreateSchema = Static<typeof shipmentCreateSchema>;
-type shipmentResponseSchema = Static<typeof shipmentResponseSchema>;
 const service = new ShipmentService(
   new ShipmentRepository(),
   new PartyRepository(),
@@ -46,7 +43,6 @@ export const shipmentRoutes = new Elysia({ prefix: "/shipments" })
     {
       body: shipmentCreateSchema,
       response: {
-        200: shipmentResponseSchema,
         201: shipmentResponseSchema,
         400: t.Object({ error: t.String() }),
         500: t.Object({ error: t.String() }),
