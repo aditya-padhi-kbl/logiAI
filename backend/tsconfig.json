@@ -5,7 +5,7 @@
     "moduleResolution": "Bundler",
     "strict": true,
     "skipLibCheck": true,
-    "types": ["bun", "node", "bun-types"],
+    "types": ["bun", "node"],
     "rootDir": "./src",
     "outDir": "./dist",
     "declaration": true,

@@ -1,8 +1,9 @@
-import { z } from "zod";
+import { type Static, t } from "elysia";
 
-const envSchema = z.object({
-  DATABASE_URL: z.string(),
-  PORT: z.coerce.number().default(3000),
+const envSchema = t.Object({
+  DATABASE_URL: t.String(),
+  PORT: t.Numeric(),
 });
 
-export const env = envSchema.parse(Bun.env);
+type Env = Static<typeof envSchema>;
+export const env = Bun.env as unknown as Env;

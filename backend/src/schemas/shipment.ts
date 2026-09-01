@@ -1,28 +1,26 @@
-import { z } from "zod";
-
-export const shipmentCreateSchema = z.object({
-  tracking_number: z.string().trim().min(1).max(100),
-  sender_id: z.uuid(),
-  receiver_id: z.uuid(),
-  created_at: z.iso.datetime(),
+import { t } from "elysia";
+export const shipmentCreateSchema = t.Object({
+  tracking_number: t.String({ minLength: 1, maxLength: 255 }),
+  sender_id: t.String({ format: "uuid" }),
+  receiver_id: t.String({ format: "uuid" }),
+  created_at: t.String({ format: "date-time" }),
 });
-export const shipmentResponseSchema = z.object({
-  id: z.uuid(),
-  tracking_number: z.string(),
-  status: z.string(),
-  sender: z.object({ id: z.uuid(), name: z.string() }),
-  receiver: z.object({ id: z.uuid(), name: z.string() }),
-  created_at: z.iso.datetime().nullable(),
+export const shipmentResponseSchema = t.Object({
+  id: t.String({ format: "uuid" }),
+  tracking_number: t.String(),
+  status: t.String(),
+  sender: t.Object({ id: t.String({ format: "uuid" }), name: t.String() }),
+  receiver: t.Object({ id: t.String({ format: "uuid" }), name: t.String() }),
+  created_at: t.Nullable(t.String({ format: "date-time" })),
 });
-export const shipmentListQuerySchema = z.object({
-  page: z.coerce.number().int().min(1).default(1),
-  page_size: z.coerce.number().int().min(1).max(100).default(20),
-  status: z.string().optional(),
+export const shipmentListQuerySchema = t.Object({
+  page: t.Numeric({ default: 1, minimum: 1 }),
+  page_size: t.Numeric({ default: 20, minimum: 1, maximum: 20 }),
+  status: t.Optional(t.String()),
 });
-export const shipmentListResponseSchema = z.object({
-  items: z.array(shipmentResponseSchema),
-  page: z.number(),
-  page_size: z.number(),
-  total: z.number(),
+export const shipmentListResponseSchema = t.Object({
+  items: t.Array(shipmentResponseSchema),
+  page: t.Number(),
+  page_size: t.Number(),
+  total: t.Number(),
 });
-export type ShipmentCreate = z.infer<typeof shipmentCreateSchema>;

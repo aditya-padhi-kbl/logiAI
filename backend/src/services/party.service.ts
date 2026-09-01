@@ -1,12 +1,15 @@
 import { PartyRepository } from "../repositories/party.repository";
-import type { PartyCreate } from "../schemas/party";
 import { Base } from "./Base.service";
+import { partyCreateSchema } from "../schemas/party";
+import { type Static } from "elysia";
+
+type PartyCreateSchema = Static<typeof partyCreateSchema>;
 
 export class PartyService extends Base {
   constructor(private readonly repository: PartyRepository) {
     super();
   }
-  createParty(data: PartyCreate) {
+  createParty(data: PartyCreateSchema) {
     return this.repository.create(data);
   }
   getById(id: string) {

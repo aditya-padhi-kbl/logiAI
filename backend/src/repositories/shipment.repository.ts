@@ -1,9 +1,10 @@
 import { db } from "../db/database";
 import type { NewShipment, Shipment } from "../db/types";
-import { shipmentListResponseSchema} from "../schemas/shipment";
-import {z} from "zod";
+import { shipmentListResponseSchema } from "../schemas/shipment";
+import { type Static } from "elysia";
 
-type ShipmentListResponse = Omit<z.infer<typeof shipmentListResponseSchema>, 'page_size' | 'page'>;
+type _ShipmentListResponse = Static<typeof shipmentListResponseSchema>;
+type ShipmentListResponse = Omit<_ShipmentListResponse, "page" | "page_size">;
 export class ShipmentRepository {
   async create(input: NewShipment): Promise<Shipment> {
     return db
@@ -40,13 +41,17 @@ export class ShipmentRepository {
       : undefined;
   }
 
-  async list(input: { page: number; page_size: number; status?: string }): Promise<ShipmentListResponse> {
+  async list(input: {
+    page: number;
+    page_size: number;
+    status?: string;
+  }): Promise<ShipmentListResponse> {
     let query = db.selectFrom("shipment");
     if (input.status) query = query.where("shipment.status", "=", input.status);
     const countRow = await query
       .select(({ fn }) => fn.count<number>("shipment.id").as("count"))
       .executeTakeFirstOrThrow();
-    const offset = (input.page - 1) * input.page_size
+    const offset = (input.page - 1) * input.page_size;
     const rows = await query
       .innerJoin("party as sender", "sender.id", "shipment.sender_id")
       .innerJoin("party as receiver", "receiver.id", "shipment.receiver_id")
@@ -58,6 +63,7 @@ export class ShipmentRepository {
         "sender.name as sender_name",
         "receiver.id as receiver_id",
         "receiver.name as receiver_name",
+        "shipment.created_at as created_at",
       ])
       .orderBy("shipment.id")
       .offset(offset)
@@ -71,6 +77,7 @@ export class ShipmentRepository {
         status: row.status,
         sender: { id: row.sender_id, name: row.sender_name },
         receiver: { id: row.receiver_id, name: row.receiver_name },
+        created_at: row?.created_at ? row.created_at.toISOString() : null,
       })),
     };
   }

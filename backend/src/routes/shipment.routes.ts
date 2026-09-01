@@ -1,4 +1,4 @@
-import { Elysia } from "elysia";
+import { Elysia, t, type Static } from "elysia";
 import { z } from "zod";
 import { PartyRepository } from "../repositories/party.repository";
 import { ShipmentRepository } from "../repositories/shipment.repository";
@@ -10,11 +10,12 @@ import {
   shipmentResponseSchema,
 } from "../schemas/shipment";
 
+type shipmentCreateSchema = Static<typeof shipmentCreateSchema>;
+type shipmentResponseSchema = Static<typeof shipmentResponseSchema>;
 const service = new ShipmentService(
   new ShipmentRepository(),
   new PartyRepository(),
 );
-
 
 export const shipmentRoutes = new Elysia({ prefix: "/shipments" })
   .post(
@@ -47,8 +48,8 @@ export const shipmentRoutes = new Elysia({ prefix: "/shipments" })
       response: {
         200: shipmentResponseSchema,
         201: shipmentResponseSchema,
-        400: z.object({ error: z.string() }),
-        500: z.object({ error: z.string() }),
+        400: t.Object({ error: t.String() }),
+        500: t.Object({ error: t.String() }),
       },
     },
   )
@@ -63,10 +64,12 @@ export const shipmentRoutes = new Elysia({ prefix: "/shipments" })
       return shipment;
     },
     {
-      params: z.object({ shipmentId: z.uuid() }),
+      params: t.Object({ shipmentId: t.String({ format: "uuid" }) }),
       response: {
         200: shipmentResponseSchema,
-        404: z.object({ error: z.string() }),
+        404: t.Object({
+          error: t.String(),
+        }),
       },
     },
   )

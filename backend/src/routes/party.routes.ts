@@ -13,7 +13,6 @@ export const partyRoutes = new Elysia({ prefix: "/parties" })
     "/:partyId",
     async ({ params, set }) => {
       const party = await service.getById(params.partyId);
-
       if (!party) {
         set.status = 404;
         return { error: "Party not found" };
@@ -27,9 +26,7 @@ export const partyRoutes = new Elysia({ prefix: "/parties" })
       response: {
         200: partyResponseSchema,
         404: t.Object({
-          error: t.Object({
-            error: t.String(),
-          }),
+          error: t.String(),
         }),
       },
     },
