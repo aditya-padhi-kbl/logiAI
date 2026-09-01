@@ -14,6 +14,8 @@ const service = new ShipmentService(
   new ShipmentRepository(),
   new PartyRepository(),
 );
+
+
 export const shipmentRoutes = new Elysia({ prefix: "/shipments" })
   .post(
     "",

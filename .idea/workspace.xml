@@ -3,28 +3,69 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+  <component name="BackgroundAgentGlobalSettings">
+    <option name="selectedModelId" value="auto" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="515c54ab-1ad3-4b07-b96d-ea0fc31f9825" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/bun.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend/bun.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/app.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/config/env.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/db/database.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/database.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/db/migrations/001_initial.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/migrations/20260830.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/db/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/types.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/routes/party.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/party.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/routes/shipment.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/shipment.routes.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/schemas/party.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/schemas/party.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/schemas/shipment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/schemas/shipment.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/services/shipment.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/shipment.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="CopilotPersistence">
+    <persistenceIdMap>
+      <entry key="_/Users/adityapadhi/code/logiAI" value="3IjTByOmlUyp2N6SFkKrTraHjUQ" />
+    </persistenceIdMap>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2,
-  "fromUser": false
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2,
+  &quot;fromUser&quot;: false
+}</component>
   <component name="ProjectId" id="3IcwjeXPRiXouTMO214qtFDt0cz" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+  <component name="ProjectSessionTemplates">
+    <option name="panelTemplate">
+      <template>
+        <option name="modeId" value="Agent" />
+        <option name="model">
+          <model>
+            <option name="modelType" value="builtin_id" />
+            <option name="modelValue" value="auto" />
+          </model>
+        </option>
+        <option name="targetType" value="BACKGROUND" />
+        <option name="worktreeMode" value="WORKSPACE" />
+      </template>
+    </option>
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -37,18 +78,28 @@
     "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "codeWithMe.voiceChat.enabledByDefault": "false",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
     "git-widget-placeholder": "main",
     "javascript.preferred.runtime.type.id": "bun",
     "last_opened_file_path": "/Users/adityapadhi/code/logiAI",
     "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.standard": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.standard": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "bun",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "settings.editor.selected.configurable": "settings.javascript.prettier",
     "ts.external.directory.path": "/Users/adityapadhi/Library/Caches/JetBrains/WebStorm2026.2/ts-go-native-preview/v7.0.0-dev.jetbrains.20260702.4/node_modules/@typescript/native-preview-darwin-arm64/lib"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/backend/src/consts" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="index.ts" type="BunRunConfiguration" temporary="true" nameIsGenerated="true">
       <option name="program" value="$PROJECT_DIR$/backend/src/index.ts" />
@@ -75,7 +126,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1788077300833</updated>
-      <workItem from="1788077302021" duration="6206000" />
+      <workItem from="1788077302021" duration="13590000" />
+      <workItem from="1788152796102" duration="5548000" />
+      <workItem from="1788265590089" duration="4048000" />
     </task>
     <servers />
   </component>
@@ -97,6 +150,7 @@
         <option value="$PROJECT_DIR$/backend/src/schemas/shipment.d.ts" />
         <option value="$PROJECT_DIR$/backend/src/repositories/shipment.repository.d.ts" />
         <option value="$PROJECT_DIR$/backend/src/repositories/party.repository.d.ts" />
+        <option value="$PROJECT_DIR$/backend/src/consts/shipment.const.d.ts" />
       </list>
     </option>
   </component>
@@ -104,21 +158,8 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/backend/src/services/shipment.service.ts</url>
-          <line>31</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/backend/src/services/shipment.service.ts</url>
-          <line>30</line>
-          <properties lambdaOrdinal="-1" />
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/backend/src/repositories/shipment.repository.ts</url>
           <line>49</line>
-          <properties lambdaOrdinal="-1" />
           <option name="timeStamp" value="3" />
         </line-breakpoint>
       </breakpoints>

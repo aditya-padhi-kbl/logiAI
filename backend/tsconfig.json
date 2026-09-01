@@ -1,1 +1,15 @@
-{"compilerOptions":{"target":"ES2022","module":"ESNext","moduleResolution":"Bundler","strict":true,"skipLibCheck":true,"noEmit":true,"types":["bun","node"]},"include":["src/**/*.ts"]}
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "strict": true,
+    "skipLibCheck": true,
+    "types": ["bun", "node"],
+    "rootDir": "./src",
+    "outDir": "./dist",
+    "declaration": true,
+    "noEmit": true
+  },
+  "include": ["src/**/*.ts"]
+}

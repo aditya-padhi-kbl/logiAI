@@ -3,12 +3,12 @@ import type { Database } from "../types";
 
 export async function up(db: Kysely<Database>): Promise<void> {
   await db.schema
-    .createTable("party")
+    .createTable("party").ifNotExists()
     .addColumn("id", "uuid", (c) => c.primaryKey().notNull())
     .addColumn("name", "varchar(255)", (c) => c.notNull().unique())
     .execute();
   await db.schema
-    .createTable("shipment")
+    .createTable("shipment").ifNotExists()
     .addColumn("id", "uuid", (c) => c.primaryKey().notNull())
     .addColumn("tracking_number", "varchar(100)", (c) => c.notNull().unique())
     .addColumn("status", "varchar(50)", (c) => c.notNull().defaultTo("CREATED"))
