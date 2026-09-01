@@ -8,19 +8,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="515c54ab-1ad3-4b07-b96d-ea0fc31f9825" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/bun.lock" beforeDir="false" afterPath="$PROJECT_DIR$/backend/bun.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/app.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/app.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/config/env.ts" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/db/database.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/database.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/migrations/001_initial.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/migrations/20260830.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/db/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/routes/party.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/party.routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/routes/shipment.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/shipment.routes.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/schemas/party.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/schemas/party.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/schemas/shipment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/schemas/shipment.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/services/shipment.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/shipment.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/tsconfig.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -128,7 +119,7 @@
       <updated>1788077300833</updated>
       <workItem from="1788077302021" duration="13590000" />
       <workItem from="1788152796102" duration="5548000" />
-      <workItem from="1788265590089" duration="4048000" />
+      <workItem from="1788265590089" duration="4923000" />
     </task>
     <servers />
   </component>

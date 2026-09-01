@@ -20,6 +20,7 @@
     "@types/bun": "latest",
     "@types/node": "latest",
     "@types/pg": "latest",
+    "bun-types": "^1.4.0",
     "typescript": "latest"
   }
 }

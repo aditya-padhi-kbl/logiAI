@@ -1,5 +1,3 @@
 import { app } from "./app";
-import { env } from "elysia";
-
-app.listen(env.PORT);
+import { env } from "./config/env";
 console.log(`LogiAI API running at http://localhost:${env.PORT}`);
