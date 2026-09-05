@@ -10,7 +10,7 @@ export class ShipmentEventService extends Base {
     super();
   }
   async createShipmentEvent(shipmentId: string, data: ShipmentEventCreate) {
-    return this.repository.create({
+    return this.repository.create(shipmentId, {
       id: this.getUUID(),
       shipment_id: shipmentId,
       event_type: data.event_type,

@@ -2,7 +2,10 @@ import { NewShipmentEvent, ShipmentEvent } from "../db/types";
 import { db } from "../db/database";
 
 export class ShipmentEventRepository {
-  async create(input: NewShipmentEvent): Promise<NewShipmentEvent> {
+  async create(
+    shipmentId: string,
+    input: NewShipmentEvent,
+  ): Promise<NewShipmentEvent> {
     return db
       .insertInto("shipment_event")
       .values(input)

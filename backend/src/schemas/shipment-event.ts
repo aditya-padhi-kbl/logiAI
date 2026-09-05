@@ -14,7 +14,7 @@ export const ShipmentEventCreateSchema = t.Object({
   event_type: t.Enum(ShipmentEvent),
   occurred_at: t.Date(),
   location: t.String({ trim: true, min: 1, max: 255 }),
-  description: t.Optional(t.String({ trim: true, min: 1, max: 255 })),
+  description: t.Nullable(t.String({ trim: true, min: 1, max: 255 })),
 });
 
 export const ShipmentEventResponseSchema = t.Object({
