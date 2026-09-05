@@ -9,13 +9,10 @@
   <component name="ChangeListManager">
     <list default="true" id="515c54ab-1ad3-4b07-b96d-ea0fc31f9825" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/consts/shipment.const.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/consts/shipment.const.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/db/database.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/database.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/db/types.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/db/types.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/repositories/shipment.repository.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/repositories/shipment.repository.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/routes/shipment.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/routes/shipment.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/index.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/src/schemas/shipment-event.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/schemas/shipment-event.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/schemas/shipment.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/schemas/shipment.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/src/services/shipment.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/backend/src/services/shipment.service.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,6 +23,11 @@
     <persistenceIdMap>
       <entry key="_/Users/adityapadhi/code/logiAI" value="3IjTByOmlUyp2N6SFkKrTraHjUQ" />
     </persistenceIdMap>
+  </component>
+  <component name="DatabaseLocalColorSettings">
+    <colors>
+      <entry key="ea2d3682-4834-40c8-8f1c-036c6a320190" value="" />
+    </colors>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -64,31 +66,36 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Bun.index.ts.executor&quot;: &quot;Debug&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;copilot.chat.legacySessionMetadata.migrated&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;javascript.preferred.runtime.type.id&quot;: &quot;bun&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/adityapadhi/code/logiAI&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.standard&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.standard&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;bun&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;settings.javascript.prettier&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/adityapadhi/Library/Caches/JetBrains/WebStorm2026.2/ts-go-native-preview/v7.0.0-dev.jetbrains.20260702.4/node_modules/@typescript/native-preview-darwin-arm64/lib&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Bun.index.ts.executor": "Debug",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "copilot.chat.legacySessionMetadata.migrated": "true",
+    "git-widget-placeholder": "main",
+    "javascript.preferred.runtime.type.id": "bun",
+    "last_opened_file_path": "/Users/adityapadhi/code/logiAI",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.standard": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.standard": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "bun",
+    "settings.editor.selected.configurable": "settings.javascript.prettier",
+    "ts.external.directory.path": "/Users/adityapadhi/Library/Caches/JetBrains/WebStorm2026.2/ts-go-native-preview/v7.0.0-dev.jetbrains.20260702.4/node_modules/@typescript/native-preview-darwin-arm64/lib"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
+    ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/backend/src/consts" />
@@ -123,7 +130,7 @@
       <workItem from="1788077302021" duration="13590000" />
       <workItem from="1788152796102" duration="5548000" />
       <workItem from="1788265590089" duration="5781000" />
-      <workItem from="1788279881719" duration="3581000" />
+      <workItem from="1788279881719" duration="11889000" />
     </task>
     <servers />
   </component>
@@ -148,16 +155,5 @@
         <option value="$PROJECT_DIR$/backend/src/consts/shipment.const.d.ts" />
       </list>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/backend/src/repositories/shipment.repository.ts</url>
-          <line>61</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>

@@ -1,4 +1,4 @@
-import { Kysely, PostgresDialect } from "kysely";
+import {Kysely, PostgresDialect, sql} from "kysely";
 import pg from "pg";
 import type { Database } from "./types";
 import { env } from "../config/env";
@@ -7,3 +7,7 @@ const pool = new Pool({ connectionString: env.DATABASE_URL });
 export const db = new Kysely<Database>({
   dialect: new PostgresDialect({ pool }),
 });
+
+export async function checkDatabaseConnection() {
+  await sql`SELECT 1`.execute(db);
+}
