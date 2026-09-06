@@ -5,6 +5,7 @@ import {
   shipmentResponseSchema,
 } from "../schemas/shipment";
 import { type Static } from "elysia";
+import { ShipmentEventValues } from "../schemas/shipment-event";
 
 type _ShipmentListResponse = Static<typeof shipmentListResponseSchema>;
 type ShipmentListResponse = Omit<_ShipmentListResponse, "page" | "page_size">;
@@ -52,7 +53,7 @@ export class ShipmentRepository {
   async list(input: {
     page: number;
     page_size: number;
-    status?: string;
+    status?: ShipmentEventValues;
   }): Promise<ShipmentListResponse> {
     let query = this.db.selectFrom("shipment");
     if (input.status) query = query.where("shipment.status", "=", input.status);
@@ -88,5 +89,23 @@ export class ShipmentRepository {
         created_at: row?.created_at ? row.created_at.toISOString() : null,
       })),
     };
+  }
+
+  async getStatusForUpdate(shipmentId: string) {
+    return this.db
+      .selectFrom("shipment")
+      .select(["status"])
+      .where("id", "=", shipmentId)
+      .forUpdate()
+      .executeTakeFirst();
+  }
+
+  async updateStatus(shipmentId: string, status: ShipmentEventValues) {
+    return this.db
+      .updateTable("shipment")
+      .set({ status })
+      .where("id", "=", shipmentId)
+      .returningAll()
+      .executeTakeFirstOrThrow();
   }
 }

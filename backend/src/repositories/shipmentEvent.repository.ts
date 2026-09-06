@@ -3,10 +3,7 @@ import { db, DbExecutor } from "../db/database";
 
 export class ShipmentEventRepository {
   constructor(private readonly db: DbExecutor) {}
-  async create(
-    shipmentId: string,
-    input: NewShipmentEvent,
-  ): Promise<NewShipmentEvent> {
+  async create(input: NewShipmentEvent): Promise<NewShipmentEvent> {
     return this.db
       .insertInto("shipment_event")
       .values(input)
