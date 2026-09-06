@@ -2,7 +2,8 @@ import { PartyRepository } from "../repositories/party.repository";
 import { ShipmentRepository } from "../repositories/shipment.repository";
 import { Base } from "./Base.service";
 import { NewShipment } from "../db/types";
-import {ShipmentEvent} from "../schemas/shipment-event";
+import { ShipmentEvent } from "../schemas/shipment-event";
+import { ShipmentEventRepository } from "../repositories/shipmentEvent.repository";
 
 type ShipCreateSchema = Omit<NewShipment, "id" | "created_at" | "status">;
 
@@ -10,6 +11,7 @@ export class ShipmentService extends Base {
   constructor(
     private readonly repository: ShipmentRepository,
     private readonly parties: PartyRepository,
+    private readonly shipmentEvent: ShipmentEventRepository,
   ) {
     super();
   }
