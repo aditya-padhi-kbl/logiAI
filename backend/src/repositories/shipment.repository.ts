@@ -1,4 +1,4 @@
-import { db } from "../db/database";
+import { db, DbExecutor } from "../db/database";
 import type { NewShipment, Shipment } from "../db/types";
 import {
   shipmentListResponseSchema,
@@ -11,8 +11,9 @@ type ShipmentListResponse = Omit<_ShipmentListResponse, "page" | "page_size">;
 type _ShipmentResponseSchema = Static<typeof shipmentResponseSchema>;
 
 export class ShipmentRepository {
+  constructor(private readonly db: DbExecutor) {}
   async create(input: NewShipment): Promise<Shipment> {
-    return db
+    return this.db
       .insertInto("shipment")
       .values(input)
       .returningAll()
@@ -20,7 +21,7 @@ export class ShipmentRepository {
   }
 
   async getById(id: string): Promise<_ShipmentResponseSchema | undefined> {
-    const row = await db
+    const row = await this.db
       .selectFrom("shipment")
       .innerJoin("party as sender", "sender.id", "shipment.sender_id")
       .innerJoin("party as receiver", "receiver.id", "shipment.receiver_id")
@@ -53,7 +54,7 @@ export class ShipmentRepository {
     page_size: number;
     status?: string;
   }): Promise<ShipmentListResponse> {
-    let query = db.selectFrom("shipment");
+    let query = this.db.selectFrom("shipment");
     if (input.status) query = query.where("shipment.status", "=", input.status);
     const countRow = await query
       .select(({ fn }) => fn.count<number>("shipment.id").as("count"))

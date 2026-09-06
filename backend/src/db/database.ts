@@ -1,4 +1,4 @@
-import {Kysely, PostgresDialect, sql} from "kysely";
+import { Kysely, PostgresDialect, sql, Transaction } from "kysely";
 import pg from "pg";
 import type { Database } from "./types";
 import { env } from "../config/env";
@@ -11,3 +11,5 @@ export const db = new Kysely<Database>({
 export async function checkDatabaseConnection() {
   await sql`SELECT 1`.execute(db);
 }
+
+export type DbExecutor = Kysely<Database> | Transaction<Database>;

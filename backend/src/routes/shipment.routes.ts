@@ -9,11 +9,12 @@ import {
   shipmentResponseSchema,
 } from "../schemas/shipment";
 import { ShipmentEventRepository } from "../repositories/shipmentEvent.repository";
+import { db } from "../db/database";
 
 const service = new ShipmentService(
-  new ShipmentRepository(),
+  new ShipmentRepository(db),
   new PartyRepository(),
-  new ShipmentEventRepository(),
+  new ShipmentEventRepository(db),
 );
 
 export const shipmentRoutes = new Elysia({ prefix: "/shipments" })

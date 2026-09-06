@@ -1,12 +1,13 @@
 import { NewShipmentEvent, ShipmentEvent } from "../db/types";
-import { db } from "../db/database";
+import { db, DbExecutor } from "../db/database";
 
 export class ShipmentEventRepository {
+  constructor(private readonly db: DbExecutor) {}
   async create(
     shipmentId: string,
     input: NewShipmentEvent,
   ): Promise<NewShipmentEvent> {
-    return db
+    return this.db
       .insertInto("shipment_event")
       .values(input)
       .returningAll()
@@ -14,7 +15,7 @@ export class ShipmentEventRepository {
   }
 
   async findByShipmentId(shipmentId: string): Promise<ShipmentEvent[]> {
-    return db
+    return this.db
       .selectFrom("shipment_event")
       .selectAll()
       .where("shipment_id", "=", shipmentId)

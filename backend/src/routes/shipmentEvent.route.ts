@@ -5,8 +5,9 @@ import {
   ShipmentEventCreateSchema,
   ShipmentEventResponseSchema,
 } from "../schemas/shipment-event";
+import { db } from "../db/database";
 
-const service = new ShipmentEventService(new ShipmentEventRepository());
+const service = new ShipmentEventService(new ShipmentEventRepository(db));
 
 export const shipmentEventRoute = new Elysia({
   prefix: "/shipments/:shipmentId/shipmentEvents",
