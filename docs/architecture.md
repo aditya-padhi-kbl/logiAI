@@ -1,141 +1,168 @@
-# LogiAI Detailed Architecture
+# LogiAI Architecture
 
-## System overview
+## Technology
+
+- Next.js + TypeScript frontend
+- Bun + TypeScript backend runtime
+- Elysia for HTTP APIs and SSE
+- Zod for runtime validation of untrusted external and AI-generated data
+- Kysely for type-safe SQL and database access
+- Kysely migrations for database schema changes
+- PostgreSQL
+- Groq for structured AI reasoning and tool calling
+- SSE for realtime updates
+- Docker for local infrastructure
+
+The active application is the TypeScript backend under `backend/`. The previous Python implementation is retained under `backend_python/` as a reference only.
+
+## High-level architecture
 
 ```text
-                     ┌──────────────┐
-                     │   Next.js    │
-                     └──────┬───────┘
-                            │
-                     REST / SSE
-                            │
-                     ┌──────▼───────┐
-                     │    Elysia    │
-                     │     Bun      │
-                     └──────┬───────┘
-                            │
-          ┌─────────────────┼──────────────────┐
-          │                 │                  │
-          ▼                 ▼                  ▼
-     Application         AI Agent          Event Engine
-      Services              │                  │
-          │               Groq                 │
-          ▼                 │                  │
-     Repositories            │                  │
-          │                 │                  │
-          ▼                 ▼                  │
-        Kysely         AI Tool Registry        │
-          │                 │                  │
-          └─────────────────┼──────────────────┘
-                            │
-                            ▼
-                       PostgreSQL
+Next.js
+   │
+   │ REST + SSE
+   ▼
+Bun / Elysia
+   │
+   ├── API routes
+   ├── Application services
+   ├── Deterministic risk engine
+   ├── AI tool registry
+   ├── Groq integration
+   └── Action executor
+          │
+          ▼
+        Kysely
+          │
+          ▼
+      PostgreSQL
 ```
 
-## Backend stack
+## Layering
 
 ```text
-Bun
-  ↓
-Elysia
-  ↓
-Zod validation
-  ↓
-Application services
-  ↓
-Repositories
-  ↓
-Kysely
-  ↓
-PostgreSQL
-```
-
-The backend is a modular monolith. HTTP, business logic, AI orchestration, and persistence have explicit boundaries while remaining in one deployable application.
-
-## AI boundary
-
-```text
-User
-  ↓
-Elysia AI endpoint
-  ↓
-Groq Agent
-  ↓
-AI Tool Registry
-  ↓
+HTTP / Elysia routes
+        ↓
 Application Services
-  ↓
-Repositories
-  ↓
-Kysely
-  ↓
+        ↓
+Domain logic
+        ↓
+Repositories / Kysely
+        ↓
 PostgreSQL
 ```
 
-The AI never accesses PostgreSQL directly. Read tools expose controlled operational queries, while write tools are subject to human approval.
-
-## Validation boundary
+The AI layer follows the same application boundary:
 
 ```text
-HTTP request / Groq output
-          ↓
-      Zod schema
-          ↓
-  Validated TypeScript data
-          ↓
-   Application service
+Groq Agent
+    ↓
+AI Tool Registry
+    ↓
+Application Services
+    ↓
+Repositories / Kysely
+    ↓
+PostgreSQL
 ```
 
-TypeScript provides compile-time guarantees and Zod provides runtime validation for external and model-generated data.
+The AI never receives direct database access.
 
-## Realtime flow
+## Backend structure
 
 ```text
-Event Simulator
-      ↓
-Application / Event Engine
-      ↓
-Elysia SSE
-      ↓
-Next.js Control Tower
+backend/
+├── src/
+│   ├── config/
+│   ├── db/
+│   │   └── migrations/
+│   ├── repositories/
+│   ├── routes/
+│   ├── schemas/
+│   └── services/
+├── AGENTS.md
+├── package.json
+├── tsconfig.json
+└── README.md
 ```
 
-## Persistence
-
-Kysely is the database access layer. Repositories own SQL queries and are the only application layer that talks to PostgreSQL.
-
-Database schema changes are managed with Kysely migrations.
-
-Core relational entities include:
-
-```text
-Party
-Shipment
-Carrier
-Route
-RouteStop
-Warehouse
-ShipmentEvent
-```
-
-Flexible event metadata and AI payloads can use PostgreSQL JSONB where appropriate.
+Keep the backend as a modular monolith for the MVP. Do not introduce microservices without a concrete requirement.
 
 ## Dependency composition
 
-Dependencies are composed explicitly at application startup:
+Infrastructure dependencies are created at application startup and composed explicitly into repositories and services. Routes receive services rather than constructing their own dependency graphs.
 
 ```text
-Kysely database
-      ↓
+Application startup
+       ↓
+Kysely database instance
+       ↓
 Repositories
-      ↓
-Services
-      ↓
-Routes
+       ↓
+Application services
+       ↓
+Elysia routes
 ```
 
-This keeps infrastructure concerns out of domain/application services and avoids coupling the application to a framework-specific dependency-injection container.
+## Shipment state and events
 
-## Python reference implementation
+`shipment.status` represents the current shipment state. `shipment_event` is append-only history.
 
-The previous FastAPI/Python backend is retained under `backend_python/`. It is not part of the active runtime path. The active implementation is under `backend/` and uses Bun, Elysia, TypeScript, Zod and Kysely.
+Shipment creation and status transitions are transactional:
+
+```text
+Create shipment
+    ↓
+BEGIN
+    ├── INSERT shipment (CREATED)
+    └── INSERT shipment_event (CREATED)
+    ↓
+COMMIT
+```
+
+```text
+Change status
+    ↓
+BEGIN
+    ├── SELECT shipment ... FOR UPDATE
+    ├── Validate domain transition
+    ├── UPDATE shipment.status
+    └── INSERT shipment_event
+    ↓
+COMMIT
+```
+
+A successful state transition and its corresponding event must commit together.
+
+## Validation
+
+Zod is the runtime validation boundary for untrusted external and model-generated data. TypeScript provides compile-time safety.
+
+## Date and time
+
+PostgreSQL timestamps use `timestamptz`. All date and datetime values crossing system boundaries use ISO-8601 with timezone information. The backend preserves the instant and does not localize timestamps for presentation. The frontend owns user-local timezone presentation.
+
+## Risk engine
+
+Risk scoring is deterministic and remains in the backend. AI explains evidence and produces recommendations; it does not become the source of truth for operational calculations.
+
+## AI tools
+
+AI tools access controlled application services rather than Kysely directly. Write tools require explicit human approval.
+
+## Realtime
+
+Shipment events are published through SSE:
+
+```text
+Event Simulator → Bun / Elysia → SSE → Next.js
+```
+
+## Security principles
+
+- Never expose the Groq API key to Next.js.
+- Validate untrusted API and AI inputs at the boundary.
+- Authorize consequential actions before execution.
+- Record AI recommendations and action approvals in an audit trail.
+- Keep database access inside the backend.
+- Do not let LLM-generated identifiers or filters bypass application-level authorization.

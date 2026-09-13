@@ -30,8 +30,6 @@ to:
 
 The AI is an operational copilot, not the source of truth. Operational facts, deterministic risk calculations, and consequential actions remain controlled by the backend.
 
----
-
 ## 2. Target User
 
 The primary user is a **Logistics Operations Manager** responsible for monitoring shipments and resolving operational exceptions.
@@ -45,8 +43,6 @@ Responsibilities include:
 - Monitoring warehouse congestion
 - Coordinating corrective actions
 - Escalating operational issues
-
----
 
 ## 3. Problem Statement
 
@@ -84,8 +80,6 @@ LogiAI provides a single operational interface that can:
 3. Recommend what should be done next.
 4. Execute approved actions safely.
 
----
-
 ## 4. Product Goals
 
 ### Detect
@@ -112,8 +106,6 @@ Provide evidence-backed operational recommendations such as rerouting a shipment
 Allow an operator to review and approve consequential AI recommendations before execution.
 
 The MVP does **not** allow AI to autonomously execute consequential operational actions.
-
----
 
 ## 5. Core User Journey
 
@@ -142,8 +134,6 @@ Audit
 ```
 
 This is the primary workflow around which the MVP should be designed.
-
----
 
 ## 6. Control Tower
 
@@ -175,8 +165,6 @@ The Control Tower is the primary screen and provides a real-time operational ove
 ```
 
 The operator should understand the current operational state within a few seconds.
-
----
 
 ## 7. Core Domain Model
 
@@ -289,8 +277,6 @@ Events represent what happened to a shipment over time.
 
 **Shipment status** represents the current state. **Shipment events** represent historical state changes and operational observations.
 
----
-
 ## 8. Risk Detection
 
 The MVP uses a deterministic risk engine rather than an ML model.
@@ -338,8 +324,6 @@ Explanation + Recommendation
 
 The backend calculates the risk. The AI explains the risk and recommends actions. The LLM must not become the source of truth for critical operational calculations.
 
----
-
 ## 9. AI Assistant
 
 The assistant provides natural-language access to operational data.
@@ -375,8 +359,6 @@ What should I do about TRK-1829?
 Should I reroute this shipment?
 How can we reduce the impact of this delay?
 ```
-
----
 
 ## 10. AI Investigation
 
@@ -414,49 +396,11 @@ The analysis should answer:
 - **What else contributed?**
 - **What is the operational impact?**
 
-Example evidence:
-
-> Shipment remained at Pune warehouse for 8 hours while the facility was operating at 96% capacity. The carrier is also experiencing above-average delays on the route.
-
----
-
 ## 11. Structured AI Responses
 
 AI responses must be structured and validated before reaching the frontend.
 
 The backend uses **Zod schemas** to validate AI contracts. The frontend renders structured fields rather than parsing arbitrary model prose.
-
-Example:
-
-```json
-{
-  "type": "risk_analysis",
-  "shipmentId": "TRK-1829",
-  "riskScore": 0.91,
-  "riskLevel": "CRITICAL",
-  "summary": "Shipment is highly likely to miss its SLA.",
-  "reasons": [
-    {
-      "factor": "Warehouse congestion",
-      "impact": "HIGH",
-      "evidence": "Pune warehouse is operating at 96% capacity."
-    },
-    {
-      "factor": "Carrier performance",
-      "impact": "MEDIUM",
-      "evidence": "Carrier average delay is 8 hours on this route."
-    }
-  ],
-  "recommendations": [
-    {
-      "action": "REROUTE_SHIPMENT",
-      "reason": "Alternative route can reduce expected delay."
-    }
-  ]
-}
-```
-
----
 
 ## 12. AI Tools
 
@@ -484,44 +428,9 @@ escalateCarrier
 
 Write tools require human approval.
 
-Architecture boundary:
-
-```text
-Groq Agent
-    ↓
-AI Tool Registry
-    ↓
-Application Services
-    ↓
-Repositories / Kysely
-    ↓
-PostgreSQL
-```
-
-The LLM never receives direct database credentials or unrestricted database access.
-
----
-
 ## 13. Human-in-the-Loop
 
-Example recommendation:
-
-```text
-Reroute TRK-1829 through Route R42.
-
-Expected delay reduction: 7 hours.
-
-Reason:
-Current route is experiencing significant congestion.
-```
-
-The operator sees:
-
-```text
-[ Approve ]    [ Reject ]
-```
-
-Only after approval does the backend execute the action.
+Only after explicit operator approval does the backend execute consequential actions.
 
 ### Action lifecycle
 
@@ -542,8 +451,6 @@ EXECUTING
 COMPLETED
 ```
 
----
-
 ## 14. Realtime Updates
 
 Shipment events should appear in the Control Tower without requiring a page refresh.
@@ -560,8 +467,6 @@ Next.js
 Control Tower
 ```
 
----
-
 ## 15. Auditability
 
 The system preserves a record of AI-generated insights and operational actions.
@@ -576,10 +481,6 @@ For which shipment?
 Who approved it?
 What happened after execution?
 ```
-
-This is a core requirement for an operational system where AI influences consequential decisions.
-
----
 
 ## 16. MVP Scope
 
@@ -637,8 +538,6 @@ This is a core requirement for an operational system where AI influences consequ
 
 The previous Python/FastAPI implementation is retained under `backend_python/` for reference only.
 
----
-
 ## 17. Non-Goals
 
 Explicitly outside the 30-day MVP:
@@ -661,32 +560,9 @@ Explicitly outside the 30-day MVP:
 
 The goal is a **strong AI-native logistics operations prototype**, not a complete logistics ERP.
 
----
-
 ## 18. Success Criteria
 
-The MVP is complete when an operator can execute this workflow:
-
-```text
-1. Open Control Tower
-2. Ask: "What needs my attention?"
-3. See high-risk shipments
-4. Select TRK-1829
-5. Ask: "Why is this shipment at risk?"
-6. AI retrieves relevant operational data through controlled tools
-7. AI produces structured analysis
-8. Ask: "What should I do?"
-9. AI recommends an action
-10. Operator reviews the recommendation
-11. Operator approves the action
-12. Backend executes the action
-13. Action appears in the audit trail
-14. Realtime shipment state is updated
-```
-
-This workflow is the definition of done for the MVP.
-
----
+The MVP is complete when an operator can execute the investigation → recommendation → approval → execution → audit workflow described above.
 
 ## 19. Product Principles
 
@@ -721,8 +597,6 @@ Recommend
    ↓
 Act
 ```
-
----
 
 ## 20. Future Vision
 
