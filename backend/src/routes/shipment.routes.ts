@@ -80,9 +80,9 @@ export const shipmentRoutes = (service: ShipmentService) =>
     )
     .patch(
       "/:shipmentId/status",
-      ({ params, set, body }) => {
+      async ({ params, set, body }) => {
         try {
-          service.updateShipmentStatus(params.shipmentId, body.status);
+          await service.updateShipmentStatus(params.shipmentId, body.status);
           set.status = 204;
         } catch (error) {
           if (
@@ -121,8 +121,8 @@ export const shipmentRoutes = (service: ShipmentService) =>
     )
     .get(
       "/:shipmentId/shipmentEvents",
-      ({ params }) => {
-        return service.getShipmentEvents(params.shipmentId);
+      async ({ params }) => {
+        return await service.getShipmentEvents(params.shipmentId);
       },
       {
         params: t.Object({
