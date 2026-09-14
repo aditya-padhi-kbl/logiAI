@@ -45,8 +45,8 @@ Groq Agent → AI Tools → Application Services → Kysely → PostgreSQL
 - Bun
 - TypeScript
 - Elysia
+- TypeBox
 - Kysely
-- Zod
 - PostgreSQL
 
 The previous Python implementation is retained under `backend_python/` as a reference implementation and is not the active backend.

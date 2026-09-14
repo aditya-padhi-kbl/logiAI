@@ -5,7 +5,7 @@
 - Next.js + TypeScript frontend
 - Bun + TypeScript backend runtime
 - Elysia for HTTP APIs and SSE
-- Zod for runtime validation of untrusted external and AI-generated data
+- TypeBox for runtime schemas and validation at application boundaries
 - Kysely for type-safe SQL and database access
 - Kysely migrations for database schema changes
 - PostgreSQL
@@ -136,7 +136,7 @@ A successful state transition and its corresponding event must commit together.
 
 ## Validation
 
-Zod is the runtime validation boundary for untrusted external and model-generated data. TypeScript provides compile-time safety.
+TypeBox schemas define runtime validation contracts for untrusted external data and AI-generated data. TypeScript provides compile-time type safety.
 
 ## Date and time
 

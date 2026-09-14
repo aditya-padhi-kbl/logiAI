@@ -1,6 +1,6 @@
 # LogiAI Backend
 
-Bun + Elysia + Kysely + PostgreSQL + Zod.
+Bun + Elysia + Kysely + PostgreSQL + TypeBox.
 
 The backend is a modular monolith. HTTP routes delegate to application services, services own business logic and transaction boundaries, and repositories handle persistence through Kysely.
 
@@ -47,6 +47,10 @@ Services own transaction boundaries. Shipment creation writes the shipment and i
 ## Date and time
 
 PostgreSQL timestamps use `timestamptz`. Datetimes crossing system boundaries use ISO-8601 with timezone information. The backend does not localize or convert timestamps for presentation; timezone conversion is a frontend concern.
+
+## Validation
+
+TypeBox schemas define runtime validation contracts at application boundaries, including API and AI-generated data. TypeScript provides compile-time type safety.
 
 ## Commands
 
