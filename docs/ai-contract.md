@@ -1,6 +1,6 @@
 # LogiAI AI Contract
 
-The AI layer uses structured, machine-readable responses. The active Bun/Elysia backend defines and validates the AI contract with TypeBox schemas before returning data to Next.js.
+The AI layer uses structured, machine-readable responses. The active Bun/Elysia backend validates model output with Zod before returning it to Next.js.
 
 ## AI response types
 
@@ -85,14 +85,14 @@ interface ActionConfirmationResponse {
 
 ## Validation boundary
 
-TypeBox schemas define the runtime contract for untrusted model output, while TypeScript provides compile-time safety.
+TypeScript types describe the compile-time shape. Zod schemas enforce the runtime contract for untrusted model output.
 
 ```text
 Groq
   ↓
 Raw model output
   ↓
-TypeBox validation
+Zod validation
   ↓
 Validated AIResponse
   ↓
