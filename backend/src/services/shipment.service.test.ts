@@ -74,12 +74,12 @@ describe("ShipmentService", () => {
       return callback({});
     });
 
-    db = { transaction: transactionMock };
+    db = { transaction: transactionMock } as any;
     service = new ShipmentService(
-      new MockShipmentRepository({}),
-      new MockPartyRepository(),
-      new MockShipmentEventRepository({}),
-      db,
+      new MockShipmentRepository({}) as any,
+      new MockPartyRepository() as any,
+      new MockShipmentEventRepository({}) as any,
+      db as any,
     );
   });
 
@@ -116,6 +116,7 @@ describe("ShipmentService", () => {
         receiver_id: receiver.id,
         status: ShipmentEvent.CREATED,
         created_at: new Date("2026-09-13T10:00:00.000Z"),
+        updated_at: null,
       };
 
       createShipmentMock.mockResolvedValue(shipment);
@@ -141,6 +142,7 @@ describe("ShipmentService", () => {
         receiver_id: receiver.id,
         status: ShipmentEvent.CREATED,
         created_at: new Date("2026-09-13T10:00:00.000Z"),
+        updated_at: null,
       };
 
       createShipmentMock.mockResolvedValue(shipment);
@@ -165,6 +167,7 @@ describe("ShipmentService", () => {
         receiver_id: receiver.id,
         status: ShipmentEvent.CREATED,
         created_at: new Date("2026-09-13T10:00:00.000Z"),
+        updated_at: null,
       };
 
       createShipmentMock.mockResolvedValue(shipment);
@@ -184,6 +187,7 @@ describe("ShipmentService", () => {
         receiver_id: receiver.id,
         status: ShipmentEvent.CREATED,
         created_at: new Date("2026-09-13T10:00:00.000Z"),
+        updated_at: null,
       };
       const error = new Error("event creation failed");
 
@@ -213,9 +217,7 @@ describe("ShipmentService", () => {
 
       await expect(
         service.updateShipmentStatus("shipment-1", ShipmentEvent.DELIVERED),
-      ).rejects.toThrow(
-        "Invalid transition from CREATED to DELIVERED",
-      );
+      ).rejects.toThrow("Invalid transition from CREATED to DELIVERED");
 
       expect(updateStatusMock).not.toHaveBeenCalled();
       expect(createShipmentEventMock).not.toHaveBeenCalled();
@@ -224,7 +226,12 @@ describe("ShipmentService", () => {
     test("updates the shipment status for a valid transition", async () => {
       const updatedShipment = {
         id: "shipment-1",
+        tracking_number: shipmentInput.tracking_number,
+        sender_id: sender.id,
+        receiver_id: receiver.id,
         status: ShipmentEvent.PICKED_UP,
+        created_at: new Date("2026-09-13T10:00:00.000Z"),
+        updated_at: null,
       };
 
       getStatusForUpdateMock.mockResolvedValue({
@@ -255,10 +262,7 @@ describe("ShipmentService", () => {
       });
       createShipmentEventMock.mockResolvedValue({});
 
-      await service.updateShipmentStatus(
-        "shipment-1",
-        ShipmentEvent.PICKED_UP,
-      );
+      await service.updateShipmentStatus("shipment-1", ShipmentEvent.PICKED_UP);
 
       expect(createShipmentEventMock).toHaveBeenCalledTimes(1);
       expect(createShipmentEventMock.mock.calls[0][0]).toMatchObject({
@@ -279,10 +283,7 @@ describe("ShipmentService", () => {
       });
       createShipmentEventMock.mockResolvedValue({});
 
-      await service.updateShipmentStatus(
-        "shipment-1",
-        ShipmentEvent.PICKED_UP,
-      );
+      await service.updateShipmentStatus("shipment-1", ShipmentEvent.PICKED_UP);
 
       expect(transactionMock).toHaveBeenCalledTimes(1);
       expect(transactionExecuteMock).toHaveBeenCalledTimes(1);

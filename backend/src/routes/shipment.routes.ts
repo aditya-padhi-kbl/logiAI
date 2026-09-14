@@ -1,6 +1,4 @@
-import { Elysia, StatusMap, t } from "elysia";
-import { PartyRepository } from "../repositories/party.repository";
-import { ShipmentRepository } from "../repositories/shipment.repository";
+import { Elysia, t } from "elysia";
 import { ShipmentService } from "../services/shipment.service";
 import {
   shipmentCreateSchema,
@@ -8,8 +6,6 @@ import {
   shipmentListResponseSchema,
   shipmentResponseSchema,
 } from "../schemas/shipment";
-import { ShipmentEventRepository } from "../repositories/shipmentEvent.repository";
-import { db } from "../db/database";
 import { ShipmentEventValues } from "../schemas/shipment-event";
 
 export const shipmentRoutes = (service: ShipmentService) =>
