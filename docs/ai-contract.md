@@ -1,8 +1,8 @@
 # LogiAI AI Contract
 
-The AI layer uses structured, machine-readable responses. The active Bun/Elysia backend uses TypeBox schemas for runtime validation of model output before returning it to Next.js.
+The AI layer uses structured, machine-readable responses. The Bun/Elysia backend uses TypeBox schemas to validate model output before returning it to the frontend.
 
-## AI response types
+## Response contract
 
 The response contract is a discriminated union keyed by `type`:
 
@@ -16,7 +16,7 @@ const AIResponse = t.Union([
 ]);
 ```
 
-TypeScript types can be derived from these TypeBox schemas with `Static<typeof Schema>`.
+TypeScript types can be derived from TypeBox schemas with `Static<typeof Schema>`.
 
 ### Text response
 
@@ -102,8 +102,6 @@ const ActionConfirmationResponse = t.Object({
 
 ## Validation boundary
 
-TypeBox schemas define the runtime contract for untrusted model output, while `Static<typeof Schema>` provides the corresponding compile-time TypeScript type.
-
 ```text
 Groq
   ↓
@@ -122,39 +120,17 @@ Invalid model output must not be treated as an operational fact. The backend sho
 
 ## Initial AI questions
 
-### What needs my attention?
+| User intent | Response type |
+|---|---|
+| What needs my attention? | `shipment_table` |
+| Which shipments are at risk? | `shipment_table` |
+| Why is shipment TRK-1829 delayed? | `risk_analysis` |
+| What should I do about TRK-1829? | `recommendation` |
+| Reroute TRK-1829. | `action_confirmation` |
 
-```text
-shipment_table
-```
+Final consequential actions require explicit human approval.
 
-### Which shipments are at risk?
-
-```text
-shipment_table
-```
-
-### Why is shipment TRK-1829 delayed?
-
-```text
-risk_analysis
-```
-
-### What should I do about TRK-1829?
-
-```text
-recommendation
-```
-
-### Reroute TRK-1829.
-
-```text
-action_confirmation
-```
-
-The final action still requires explicit human approval before execution.
-
-## AI tools
+## Tool boundary
 
 The LLM has access to controlled application tools. Tools must call application services rather than Kysely directly.
 
@@ -180,8 +156,6 @@ escalateCarrier
 
 Write tools require human approval.
 
-## Tool boundary
-
 ```text
 Groq Agent
     ↓
@@ -195,12 +169,3 @@ PostgreSQL
 ```
 
 The LLM never receives database credentials or unrestricted database access.
-
-## Screens
-
-The initial product has four primary screens:
-
-- `/control-tower` — Dashboard
-- `/shipments/:id` — Shipment details
-- `/investigation/:id` — AI investigation
-- `/actions/:id` — Action approval
