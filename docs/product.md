@@ -28,7 +28,7 @@ to:
 "Here is what I recommend doing."
 ```
 
-The AI is an operational copilot, not the source of truth. Operational facts, deterministic risk calculations, and consequential actions remain controlled by the backend.
+The AI is an operational copilot, not the source of truth. Operational facts, deterministic calculations, and consequential actions remain controlled by the backend.
 
 ## 2. Target User
 
@@ -48,10 +48,9 @@ Responsibilities include:
 
 Logistics operations generate large amounts of related data:
 
-- Shipment status
-- Shipment events
+- Shipment status and events
 - Carrier performance
-- Warehouse capacity
+- Warehouse capacity and utilization
 - Route information
 - Delivery SLAs
 
@@ -95,15 +94,15 @@ Identify shipments that require operational attention:
 
 ### Investigate
 
-Correlate shipment events, carrier performance, route history, warehouse conditions, and current shipment state to explain an exception.
+Correlate relevant operational data to explain an exception and identify contributing factors.
 
 ### Recommend
 
-Provide evidence-backed operational recommendations such as rerouting a shipment when the current route or warehouse conditions create significant delay risk.
+Provide evidence-backed operational recommendations, such as rerouting a shipment when current route or warehouse conditions create significant delay risk.
 
 ### Execute safely
 
-Allow an operator to review and approve consequential AI recommendations before execution.
+Allow an operator to review and approve consequential recommendations before execution.
 
 The MVP does **not** allow AI to autonomously execute consequential operational actions.
 
@@ -137,7 +136,7 @@ This is the primary workflow around which the MVP should be designed.
 
 ## 6. Control Tower
 
-The Control Tower is the primary screen and provides a real-time operational overview.
+The Control Tower is the primary operational screen. It should give the operator a real-time overview and make important exceptions immediately visible.
 
 ### Key metrics
 
@@ -164,124 +163,37 @@ The Control Tower is the primary screen and provides a real-time operational ove
 └─────────────────────────────────────────┘
 ```
 
-The operator should understand the current operational state within a few seconds.
-
-## 7. Core Domain Model
+## 7. Core Domain
 
 ### Shipment
 
-The central business object.
-
-```text
-Tracking Number
-Order Number
-Sender
-Receiver
-Carrier
-Route
-Origin
-Destination
-Current Location
-Status
-Expected Delivery
-Actual Delivery
-Risk Score
-```
+The central business object. A shipment has a tracking number, sender, receiver, carrier, route, status, delivery expectations, and operational risk information.
 
 ### Party
 
-A Party represents an organization or customer participating in a shipment. A Party can act as either sender or receiver.
-
-The shipment explicitly stores the relationship:
-
-```text
-senderId
-receiverId
-```
-
-Sender and receiver are **shipment roles**, not permanent Party types.
-
-Example:
-
-```text
-Shipment TRK-1829
-
-Sender:
-  Acme Electronics
-
-Receiver:
-  Reliance Retail
-```
+A Party represents an organization or customer participating in a shipment. A Party can act as either sender or receiver; these are shipment roles rather than permanent Party types.
 
 ### Carrier
 
-Responsible for transporting a shipment.
-
-Attributes include:
-
-- Name
-- Code
-- On-time rate
-- Average delay
-- Operational status
-
-Carrier performance contributes to risk scoring.
+Responsible for transporting a shipment. Carrier performance contributes to operational risk assessment.
 
 ### Route
 
-Represents the planned transportation path.
-
-Example:
-
-```text
-Bangalore
-    ↓
-Pune
-    ↓
-Mumbai
-```
-
-A route contains one or more route stops. A stop may represent a warehouse, distribution center, or logistics hub.
+Represents the planned transportation path and its stops. A stop may represent a warehouse, distribution center, or logistics hub.
 
 ### Warehouse
 
-Represents a physical logistics facility.
-
-Operational attributes include:
-
-- Capacity
-- Current load
-- Utilization
-- Operational status
-
-Example:
-
-```text
-Pune Warehouse
-Capacity:      10,000
-Current load:   9,600
-Utilization:       96%
-Status:       CONGESTED
-```
+Represents a physical logistics facility with operational attributes such as capacity, utilization, and status.
 
 ### Shipment Events
 
-Events represent what happened to a shipment over time.
-
-```text
-08:30  PICKED_UP
-11:20  ARRIVED_AT_WAREHOUSE
-16:10  WAREHOUSE_CONGESTION
-18:40  DELAYED
-```
-
-**Shipment status** represents the current state. **Shipment events** represent historical state changes and operational observations.
+Events represent what happened to a shipment over time. `shipment.status` represents the current state, while shipment events provide the historical timeline.
 
 ## 8. Risk Detection
 
 The MVP uses a deterministic risk engine rather than an ML model.
 
-Inputs may include:
+Potential inputs include:
 
 - Current delay
 - Carrier performance
@@ -289,26 +201,9 @@ Inputs may include:
 - Route performance
 - SLA proximity
 
-Initial weighting:
+The engine produces a normalized risk score and risk level. The exact implementation and weighting belong in the technical architecture rather than the product specification.
 
-```text
-Current delay        35%
-Carrier performance 25%
-Warehouse load       20%
-Route performance    20%
-```
-
-The engine produces a score from `0` to `1` and a risk level.
-
-Example:
-
-```text
-TRK-1829
-Risk Score: 0.91
-Risk Level: CRITICAL
-```
-
-### Principle
+The product principle is:
 
 ```text
 Operational Data
@@ -322,11 +217,11 @@ AI
 Explanation + Recommendation
 ```
 
-The backend calculates the risk. The AI explains the risk and recommends actions. The LLM must not become the source of truth for critical operational calculations.
+The backend remains the source of truth for critical operational calculations.
 
 ## 9. AI Assistant
 
-The assistant provides natural-language access to operational data.
+The assistant provides natural-language access to operational information.
 
 ### Monitoring
 
@@ -362,73 +257,20 @@ How can we reduce the impact of this delay?
 
 ## 10. AI Investigation
 
-For a shipment investigation, the AI gathers relevant operational context through controlled application tools.
+For a shipment investigation, the AI gathers relevant operational context through controlled application capabilities.
 
-Example:
-
-```text
-User
- │
- │ "Why is TRK-1829 delayed?"
- ▼
-AI Agent
- │
- ├── getShipment()
- ├── getShipmentEvents()
- ├── getCarrierPerformance()
- ├── getRouteInformation()
- └── getWarehouseStatus()
- │
- ▼
-Structured Context
- │
- ▼
-Groq
- │
- ▼
-Risk Analysis
-```
-
-The analysis should answer:
+The investigation should answer:
 
 - **What happened?**
 - **Why did it happen?**
 - **What else contributed?**
 - **What is the operational impact?**
 
-## 11. Structured AI Responses
+The AI must reason only over supplied operational evidence. It must not invent missing facts.
 
-AI responses must be structured and validated before reaching the frontend.
+See [`ai-contract.md`](./ai-contract.md) for response and tool contracts.
 
-The backend uses **Zod schemas** to validate AI contracts. The frontend renders structured fields rather than parsing arbitrary model prose.
-
-## 12. AI Tools
-
-The AI does **not** access PostgreSQL directly. It accesses controlled application tools exposed by the Elysia backend.
-
-### Read tools
-
-```text
-searchShipments
-getShipment
-getShipmentEvents
-getAtRiskShipments
-getCarrierPerformance
-getWarehouseStatus
-getRouteInformation
-```
-
-### Write tools
-
-```text
-rerouteShipment
-notifyCustomer
-escalateCarrier
-```
-
-Write tools require human approval.
-
-## 13. Human-in-the-Loop
+## 11. Human-in-the-Loop
 
 Only after explicit operator approval does the backend execute consequential actions.
 
@@ -451,27 +293,17 @@ EXECUTING
 COMPLETED
 ```
 
-## 14. Realtime Updates
+## 12. Realtime Updates
 
-Shipment events should appear in the Control Tower without requiring a page refresh.
+Shipment events should appear in the Control Tower without requiring a page refresh. The MVP uses Server-Sent Events (SSE).
 
-The MVP uses **Server-Sent Events (SSE)**:
+The transport and implementation details belong in [`architecture.md`](./architecture.md).
 
-```text
-Event Simulator
-      ↓
-Bun / Elysia
-      ↓ SSE
-Next.js
-      ↓
-Control Tower
-```
-
-## 15. Auditability
+## 13. Auditability
 
 The system preserves a record of AI-generated insights and operational actions.
 
-For every AI action, the system should be able to answer:
+For every consequential AI action, the system should be able to answer:
 
 ```text
 What did AI recommend?
@@ -482,7 +314,7 @@ Who approved it?
 What happened after execution?
 ```
 
-## 16. MVP Scope
+## 14. MVP Scope
 
 ### Logistics
 
@@ -510,7 +342,7 @@ What happened after execution?
 - Root-cause analysis
 - Structured AI responses
 - Recommendations
-- Tool calling through the Elysia backend
+- Controlled tool calling
 
 ### Actions
 
@@ -526,19 +358,9 @@ What happened after execution?
 - Shipment event simulation
 - SSE updates
 
-### Platform
-
-- Next.js frontend
-- Bun / Elysia / TypeScript backend
-- Zod validation
-- Kysely data access
-- Kysely migrations
-- PostgreSQL persistence
-- Groq for AI inference
-
 The previous Python/FastAPI implementation is retained under `backend_python/` for reference only.
 
-## 17. Non-Goals
+## 15. Non-Goals
 
 Explicitly outside the 30-day MVP:
 
@@ -560,15 +382,15 @@ Explicitly outside the 30-day MVP:
 
 The goal is a **strong AI-native logistics operations prototype**, not a complete logistics ERP.
 
-## 18. Success Criteria
+## 16. Success Criteria
 
 The MVP is complete when an operator can execute the investigation → recommendation → approval → execution → audit workflow described above.
 
-## 19. Product Principles
+## 17. Product Principles
 
 ### 1. AI should reason over data, not invent data
 
-Operational facts must come from the backend.
+Operational facts must come from controlled backend/application data.
 
 ### 2. Deterministic systems remain deterministic
 
@@ -576,7 +398,7 @@ Risk calculations, shipment states, and operational actions should not depend so
 
 ### 3. Structured AI over text-only AI
 
-AI responses should be machine-readable and validated with Zod.
+AI responses should be machine-readable and validated at the application boundary. The concrete contract is defined in [`ai-contract.md`](./ai-contract.md).
 
 ### 4. Humans remain in control
 
@@ -598,7 +420,7 @@ Recommend
 Act
 ```
 
-## 20. Future Vision
+## 18. Future Vision
 
 After the MVP, LogiAI could evolve into a broader logistics intelligence platform with capabilities such as:
 
