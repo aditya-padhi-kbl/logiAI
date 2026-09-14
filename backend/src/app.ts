@@ -19,11 +19,4 @@ export const app = new Elysia()
   .group("/api", (api) =>
     api.use(shipmentRoutes(shipmentService)).use(partyRoutes),
   )
-  .use(
-    openapi(),
-    // {
-    //     mapJsonSchema: {
-    //         zod: z.toJSONSchema
-    //     }
-    // }
-  );
+  .use(openapi());
