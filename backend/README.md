@@ -1,6 +1,6 @@
 # LogiAI Backend
 
-Bun + Elysia + Kysely + PostgreSQL + Zod.
+Bun + Elysia + Kysely + PostgreSQL + TypeBox.
 
 The backend is a modular monolith. HTTP routes delegate to application services, services own business logic and transaction boundaries, and repositories handle persistence through Kysely.
 
