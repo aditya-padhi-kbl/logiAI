@@ -400,7 +400,7 @@ The analysis should answer:
 
 AI responses must be structured and validated before reaching the frontend.
 
-The backend uses **Zod schemas** to validate AI contracts. The frontend renders structured fields rather than parsing arbitrary model prose.
+The backend uses **TypeBox schemas** to validate AI contracts. The frontend renders structured fields rather than parsing arbitrary model prose.
 
 ## 12. AI Tools
 
@@ -530,7 +530,7 @@ What happened after execution?
 
 - Next.js frontend
 - Bun / Elysia / TypeScript backend
-- Zod validation
+- TypeBox validation
 - Kysely data access
 - Kysely migrations
 - PostgreSQL persistence
@@ -576,7 +576,7 @@ Risk calculations, shipment states, and operational actions should not depend so
 
 ### 3. Structured AI over text-only AI
 
-AI responses should be machine-readable and validated with Zod.
+AI responses should be machine-readable and validated with TypeBox.
 
 ### 4. Humans remain in control
 
