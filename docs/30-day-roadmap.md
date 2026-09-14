@@ -34,7 +34,7 @@ The 30-day plan has two goals: ship a credible AI-native logistics control tower
 - Create hero shipment `TRK-1829`.
 
 ### Day 5 — API quality
-- Request/response Zod schemas.
+- Request/response TypeBox schemas.
 - Runtime validation.
 - Consistent errors and exception handling.
 - Pagination.
@@ -55,7 +55,7 @@ The 30-day plan has two goals: ship a credible AI-native logistics control tower
 - Unit-test domain services.
 - Integration-test Kysely queries.
 - API tests for Elysia routes.
-- Test Zod validation and error contracts.
+- Test TypeBox validation and error contracts.
 - Review Week 1 architecture.
 
 ## Phase 2 — Control Tower
@@ -109,7 +109,7 @@ The 30-day plan has two goals: ship a credible AI-native logistics control tower
 - Establish system prompt and domain context.
 
 ### Day 16 — Structured AI responses
-- Define discriminated Zod response contracts.
+- Define structured TypeBox response contracts.
 - Validate model output.
 - Handle invalid model output safely.
 - Add retry/fallback behavior where appropriate.
@@ -204,7 +204,7 @@ Throughout the project, be able to explain:
 - Elysia request lifecycle and hooks.
 - Explicit dependency composition vs framework-managed dependency injection.
 - TypeScript structural typing, generics and discriminated unions.
-- Runtime validation with Zod vs compile-time TypeScript types.
+- Runtime validation with TypeBox vs compile-time TypeScript types.
 - Async/await, Promises and concurrency.
 - Kysely query construction and type safety.
 - SQL joins, indexes and transaction boundaries.
