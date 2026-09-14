@@ -8,7 +8,7 @@ These rules apply to the active TypeScript backend under `backend/`.
 - Use `bun:test` for backend unit and integration tests.
 - Use Elysia for HTTP APIs and SSE.
 - Use Kysely for PostgreSQL access and migrations.
-- Use Zod for runtime validation of untrusted external and AI-generated data.
+- Use TypeBox for runtime schemas and validation of untrusted external and AI-generated data.
 
 ## Structure
 
