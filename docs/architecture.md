@@ -7,7 +7,6 @@
 - Elysia for HTTP APIs and SSE
 - TypeBox for runtime schemas and validation at application boundaries
 - Kysely for type-safe SQL and database access
-- Kysely migrations for database schema changes
 - PostgreSQL
 - Groq for structured AI reasoning and tool calling
 - SSE for realtime updates
@@ -38,21 +37,7 @@ Bun / Elysia
       PostgreSQL
 ```
 
-## Layering
-
-```text
-HTTP / Elysia routes
-        ↓
-Application Services
-        ↓
-Domain logic
-        ↓
-Repositories / Kysely
-        ↓
-PostgreSQL
-```
-
-The AI layer follows the same application boundary:
+The AI never accesses PostgreSQL directly:
 
 ```text
 Groq Agent
@@ -66,31 +51,28 @@ Repositories / Kysely
 PostgreSQL
 ```
 
-The AI never receives direct database access.
-
-## Backend structure
+## Backend layering
 
 ```text
-backend/
-├── src/
-│   ├── config/
-│   ├── db/
-│   │   └── migrations/
-│   ├── repositories/
-│   ├── routes/
-│   ├── schemas/
-│   └── services/
-├── AGENTS.md
-├── package.json
-├── tsconfig.json
-└── README.md
+HTTP / Elysia routes
+        ↓
+Application Services
+        ↓
+Domain logic
+        ↓
+Repositories / Kysely
+        ↓
+PostgreSQL
 ```
 
-Keep the backend as a modular monolith for the MVP. Do not introduce microservices without a concrete requirement.
+- Routes are thin HTTP adapters.
+- Services own business logic and transaction boundaries.
+- Repositories own persistence and queries.
+- AI tools call application services rather than repositories or Kysely directly.
 
 ## Dependency composition
 
-Infrastructure dependencies are created at application startup and composed explicitly into repositories and services. Routes receive services rather than constructing their own dependency graphs.
+Infrastructure dependencies are created at application startup and composed explicitly into repositories and services.
 
 ```text
 Application startup
@@ -103,6 +85,8 @@ Application services
        ↓
 Elysia routes
 ```
+
+Keep the backend as a modular monolith for the MVP. Do not introduce microservices without a concrete requirement.
 
 ## Shipment state and events
 
@@ -140,7 +124,9 @@ TypeBox schemas define runtime validation contracts for untrusted external data 
 
 ## Date and time
 
-PostgreSQL timestamps use `timestamptz`. All date and datetime values crossing system boundaries use ISO-8601 with timezone information. The backend preserves the instant and does not localize timestamps for presentation. The frontend owns user-local timezone presentation.
+PostgreSQL timestamps use `timestamptz`. Date and datetime values crossing system boundaries use ISO-8601 with timezone information. The backend preserves the instant and does not localize timestamps for presentation. The frontend owns user-local timezone presentation.
+
+Durations in API and tool contracts are numeric seconds.
 
 ## Risk engine
 
@@ -148,7 +134,9 @@ Risk scoring is deterministic and remains in the backend. AI explains evidence a
 
 ## AI tools
 
-AI tools access controlled application services rather than Kysely directly. Write tools require explicit human approval.
+AI tools access controlled application services rather than Kysely directly. Read tools provide scoped operational context. Write tools require explicit human approval before consequential actions are executed.
+
+See [`ai-contract.md`](./ai-contract.md) for AI response and tool contracts.
 
 ## Realtime
 
