@@ -14,7 +14,7 @@ export const ShipmentEventResponseSchema = t.Object({
   id: t.String({ format: "uuid" }),
   shipment_id: t.String({ format: "uuid" }),
   event_type: t.Unsafe<ShipmentEventValues>(t.String()),
-  occurred_at: t.Date(),
+  occurred_at: t.String({ format: "date-time" }),
   location: t.String(),
   description: t.Nullable(t.String()),
 });

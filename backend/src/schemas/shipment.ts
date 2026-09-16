@@ -1,5 +1,5 @@
 import { t } from "elysia";
-import { ShipmentEvent, ShipmentEventValues } from "./shipment-event";
+import { ShipmentEventValues } from "./shipment-event";
 export const shipmentCreateSchema = t.Object({
   tracking_number: t.String({ minLength: 1, maxLength: 255 }),
   sender_id: t.String({ format: "uuid" }),

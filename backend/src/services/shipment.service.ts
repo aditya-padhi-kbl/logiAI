@@ -89,7 +89,7 @@ export class ShipmentService extends Base {
         );
       }
 
-      const updatedShipment = shipmentRepository.updateStatus(
+      const updatedShipment = await shipmentRepository.updateStatus(
         shipmentId,
         newStatus,
       );
@@ -109,6 +109,10 @@ export class ShipmentService extends Base {
   async getShipmentEvents(
     shipmentId: string,
   ): Promise<ShipmentEventResponse[]> {
-    return this.shipmentEvent.findByShipmentId(shipmentId);
+    const events = await this.shipmentEvent.findByShipmentId(shipmentId);
+    return events.map((event) => ({
+      ...event,
+      occurred_at: new Date(event.occurred_at).toISOString(),
+    }));
   }
 }
