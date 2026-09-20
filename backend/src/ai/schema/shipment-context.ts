@@ -1,4 +1,4 @@
-import { type Static, t } from "elysia";
+import { getSchemaValidator, type Static, t } from "elysia";
 import { shipmentResponseSchema } from "../../schemas/shipment";
 import { ShipmentTimelineSchema } from "../../services/shipmentTimeline.service";
 
@@ -16,5 +16,9 @@ export const shipmentContextSchema = t.Union([
   availableShipmentContextSchema,
   unavailableShipmentContextSchema,
 ]);
+
+export const ShipmentContextSchemaValidator = getSchemaValidator(
+  shipmentContextSchema,
+);
 
 export type ShipmentContext = Static<typeof shipmentContextSchema>;
