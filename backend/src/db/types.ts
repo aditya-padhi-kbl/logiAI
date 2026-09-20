@@ -17,7 +17,7 @@ export interface ShipmentTable {
   sender_id: ColumnType<string, string, never>;
   receiver_id: ColumnType<string, string, never>;
   created_at: ColumnType<Date, string | Date, never>;
-  updated_at: ColumnType<Date | null, never, Date | string>;
+  updated_at: ColumnType<Date | null, Date, Date | string>;
 }
 
 export interface ShipmentEventTable {

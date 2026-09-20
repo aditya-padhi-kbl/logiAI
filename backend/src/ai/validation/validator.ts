@@ -3,7 +3,7 @@ import type { ElysiaTypeCheck } from "elysia/schema";
 
 export function schemaValidator<T extends AnySchema>(
   validator: ElysiaTypeCheck<T>,
-  value: unknown,
+  context: unknown,
 ): ReturnType<ElysiaTypeCheck<T>["safeParse"]> {
-  return validator.safeParse(value);
+  return validator.safeParse(context);
 }

@@ -10,8 +10,8 @@ import {
 import { ShipmentEventRepository } from "../repositories/shipmentEvent.repository";
 import { DbExecutor } from "../db/database";
 import { ValidTransactions } from "./rules/shipmentEvent";
-
-type ShipCreateSchema = Omit<NewShipment, "id" | "created_at" | "status">;
+import { Static } from "elysia";
+import { shipmentCreateSchema } from "../schemas/shipment";
 
 export class ShipmentService extends Base {
   constructor(
@@ -23,7 +23,7 @@ export class ShipmentService extends Base {
     super();
   }
 
-  async createShipment(data: ShipCreateSchema) {
+  async createShipment(data: Static<typeof shipmentCreateSchema>) {
     const [sender, receiver] = await Promise.all([
       this.parties.getById(data.sender_id),
       this.parties.getById(data.receiver_id),
@@ -42,6 +42,7 @@ export class ShipmentService extends Base {
         sender_id: data.sender_id,
         receiver_id: data.receiver_id,
         created_at: now,
+        updated_at: now,
       });
 
       await shipmentEventRepository.create({
