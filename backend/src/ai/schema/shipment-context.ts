@@ -17,8 +17,8 @@ export const shipmentContextSchema = t.Union([
   unavailableShipmentContextSchema,
 ]);
 
+export type ShipmentContext = Static<typeof shipmentContextSchema>;
+
 export const ShipmentContextSchemaValidator = getSchemaValidator(
   shipmentContextSchema,
 );
-
-export type ShipmentContext = Static<typeof shipmentContextSchema>;

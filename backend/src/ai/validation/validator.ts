@@ -1,9 +1,9 @@
-import type { AnySchema, UnwrapSchema } from "elysia";
+import type { AnySchema } from "elysia";
 import type { ElysiaTypeCheck } from "elysia/schema";
 
-export function schemaValidator<T extends AnySchema>(
+export function schemaValidator<TContext, T extends AnySchema>(
   validator: ElysiaTypeCheck<T>,
-  context: unknown,
+  context: TContext,
 ): ReturnType<ElysiaTypeCheck<T>["safeParse"]> {
   return validator.safeParse(context);
 }

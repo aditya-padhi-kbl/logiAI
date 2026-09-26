@@ -6,3 +6,4 @@ __pycache__/
 .ruff_cache/
 /**/*.d.ts
 /**/node_modules
+experiments/

@@ -15,7 +15,9 @@ const shipmentService = new ShipmentService(
   db,
 );
 export const app = new Elysia()
-  .get("/health", () => ({ status: "ok", service: "logiai-api" }))
+  .get("/health", () => {
+    return { status: "ok", service: "logiai-api" };
+  })
   .group("/api", (api) =>
     api.use(shipmentRoutes(shipmentService)).use(partyRoutes),
   )
