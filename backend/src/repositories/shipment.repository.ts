@@ -1,4 +1,4 @@
-import { db, DbExecutor } from "../db/database";
+import { DbExecutor } from "../db/database";
 import type { NewShipment, Shipment } from "../db/types";
 import {
   shipmentListResponseSchema,
