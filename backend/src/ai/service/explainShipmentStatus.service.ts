@@ -2,5 +2,9 @@ import { ShipmentContext } from "../schema/shipment-context";
 import { ShipmentExplanation } from "../schema/ShipmentStatusExplanation";
 
 export class ExplainShipmentStatusService {
-  async explain(context: ShipmentContext): Promise<ShipmentExplanation> {}
+  async explain(context: ShipmentContext): Promise<ShipmentExplanation> {
+    return Promise.resolve({
+      explanation: "Hello world",
+    });
+  }
 }
