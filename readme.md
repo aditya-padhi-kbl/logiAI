@@ -2,107 +2,118 @@
 
 > AI-powered logistics operations control tower for detecting, investigating, and resolving shipment exceptions.
 
-LogiAI is an AI-native logistics operations prototype. The backend remains the source of truth for operational state, deterministic calculations, and consequential actions; AI provides investigation, explanation, and recommendations through controlled application tools.
+The backend is the source of truth for operational state and consequential actions. AI functionality must use validated contracts and application services; it must never access PostgreSQL directly.
 
 ## Architecture
 
 ```text
 Next.js
-   │ REST + SSE
+   │ REST
    ▼
-Bun / Elysia
-   ├── API routes
+FastAPI
+   ├── Pydantic request/response validation
    ├── Application services
-   ├── Deterministic risk engine
-   ├── AI tool registry
-   └── Groq integration
+   ├── Deterministic domain rules
+   └── AI integrations (incremental implementation)
           │
           ▼
-       Kysely
+    SQLAlchemy Core
           │
           ▼
       PostgreSQL
 ```
 
-AI never accesses PostgreSQL directly:
-
-```text
-Groq Agent → AI Tools → Application Services → Kysely → PostgreSQL
-```
-
 ## Technology
 
 ### Frontend
-
-- Next.js
-- TypeScript
+- Next.js and TypeScript
 - TanStack Query
 - RxJS where shared realtime streams are useful
 - Tailwind CSS / MUI
 
 ### Backend
+- Python 3.12+
+- FastAPI
+- Pydantic v2 and Pydantic Settings
+- SQLAlchemy Core with async execution
+- asyncpg
+- Alembic
+- Pyright strict mode
+- pytest and Ruff
 
-- Bun
-- TypeScript
-- Elysia
-- TypeBox
-- Kysely
-- PostgreSQL
+Pydantic is mandatory at external-data boundaries: HTTP request/response models, LLM output, external API responses and configuration. Pyright checks internal Python types statically. SQLAlchemy Core is the SQL query builder; it is used without ORM entity models.
 
-The previous Python implementation is retained under `backend_python/` as a reference implementation and is not the active backend.
+The former Bun/Elysia/Kysely backend is retained under `backend_bun/` for reference only. The active backend is under `backend/app/`.
 
-## Domain
+## Domain invariants
 
-```text
-Party ──┐
-        ├── Shipment ── Carrier
-Party ──┘       │
-                ├── Route ── RouteStop ── Warehouse
-                └── ShipmentEvent
-```
+- `shipment.status` is the current state; `shipment_event` is append-only history.
+- Shipment creation and its `CREATED` event are committed atomically.
+- Status transitions lock the shipment row with `SELECT ... FOR UPDATE`.
+- Status changes and their corresponding events are written in one transaction.
+- API datetimes must be timezone-aware ISO-8601 values.
+- AI-generated data must be validated before business logic or tool execution.
 
-`shipment.status` represents the current state. `shipment_event` is append-only history. State changes and their corresponding events are committed atomically.
+## Shipment API
 
-## Current shipment API
-
-```text
-POST   /shipments
-GET    /shipments
-GET    /shipments/:id
-PATCH  /shipments/:id/status
-GET    /shipments/:id/shipmentEvents
-```
-
-## Product workflow
+The API routes retain the existing `/api` prefix:
 
 ```text
-What needs my attention?
-        ↓
-Why is it happening?
-        ↓
-What should I do?
-        ↓
-Human approval
-        ↓
-Execute + audit
+POST   /api/parties
+GET    /api/parties/{party_id}
+POST   /api/shipments
+GET    /api/shipments
+GET    /api/shipments/{shipment_id}
+PATCH  /api/shipments/{shipment_id}/status
+GET    /api/shipments/{shipment_id}/shipmentEvents
+GET    /health
 ```
+
+FastAPI's OpenAPI documentation is available at `/docs`. SSE/realtime endpoints are not implemented in this migration branch.
+
+## Local development
+
+Set the database variables used by `compose.yml` in the repository-root `.env` file:
+
+```dotenv
+DB_NAME=logiai
+DB_USER=postgres
+DB_PASSWORD=change_me
+```
+
+Start PostgreSQL and the API:
+
+```bash
+docker compose -f compose.yml up --build
+```
+
+For local Python development, from `backend/`:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e '.[dev]'
+alembic upgrade head
+uvicorn app.main:app --reload
+```
+
+Run checks from `backend/`:
+
+```bash
+pytest
+pyright
+ruff check .
+alembic upgrade head
+```
+
+The initial Alembic baseline is intentionally non-destructive: it creates missing tables but does not alter or drop existing tables. Review schema differences before applying future migrations to an existing database.
 
 ## Documentation
 
-- [`docs/product.md`](./docs/product.md) — product specification, goals, domain, and MVP scope
-- [`docs/architecture.md`](./docs/architecture.md) — system and backend architecture
-- [`docs/ai-contract.md`](./docs/ai-contract.md) — AI response and tool contracts
-- [`docs/30-day-roadmap.md`](./docs/30-day-roadmap.md) — implementation roadmap
-- [`AGENTS.md`](./AGENTS.md) — repository-wide engineering rules
-- [`backend/AGENTS.md`](./backend/AGENTS.md) — backend-specific engineering rules
-- [`frontend/AGENTS.md`](./frontend/AGENTS.md) — frontend-specific engineering rules
-
-## Development data
-
-The target simulated dataset includes realistic parties, carriers, warehouses, routes, shipments, and shipment events covering normal operations, delays, carrier degradation, warehouse congestion, route disruption, and SLA breaches.
-
-The hero scenario is `TRK-1829`, which demonstrates investigation → recommendation → approval → execution → audit.
-
-## Project status
-
-The project is being built incrementally as a modular monolith. The current focus is the shipment domain and its deterministic intelligence foundation before introducing the AI investigation layer.
+- [Product specification](./docs/product.md)
+- [Architecture](./docs/architecture.md)
+- [AI contracts](./docs/ai-contract.md)
+- [30-day roadmap](./docs/30-day-roadmap.md)
+- [Repository engineering rules](./AGENTS.md)
+- [Backend engineering rules](./backend/AGENTS.md)
+- [Frontend engineering rules](./frontend/AGENTS.md)

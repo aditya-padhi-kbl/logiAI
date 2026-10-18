@@ -1,8 +1,10 @@
 .DS_Store
 .env
 __pycache__/
+.venv/
 .mypy_cache/
 .pytest_cache/
+.pyright/
 .ruff_cache/
 /**/*.d.ts
 /**/node_modules
