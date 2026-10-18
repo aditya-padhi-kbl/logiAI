@@ -8,7 +8,7 @@ The backend is the source of truth for operational state and consequential actio
 
 ```text
 Next.js
-   │ REST + SSE
+   │ REST
    ▼
 FastAPI
    ├── Pydantic request/response validation
@@ -43,6 +43,8 @@ FastAPI
 
 Pydantic is mandatory at external-data boundaries: HTTP request/response models, LLM output, external API responses and configuration. Pyright checks internal Python types statically. SQLAlchemy Core is the SQL query builder; it is used without ORM entity models.
 
+The former Bun/Elysia/Kysely backend is retained under `backend_bun/` for reference only. The active backend is under `backend/app/`.
+
 ## Domain invariants
 
 - `shipment.status` is the current state; `shipment_event` is append-only history.
@@ -67,7 +69,7 @@ GET    /api/shipments/{shipment_id}/shipmentEvents
 GET    /health
 ```
 
-FastAPI's OpenAPI documentation is available at `/docs`.
+FastAPI's OpenAPI documentation is available at `/docs`. SSE/realtime endpoints are not implemented in this migration branch.
 
 ## Local development
 
@@ -91,6 +93,7 @@ For local Python development, from `backend/`:
 python -m venv .venv
 source .venv/bin/activate
 pip install -e '.[dev]'
+alembic upgrade head
 uvicorn app.main:app --reload
 ```
 
