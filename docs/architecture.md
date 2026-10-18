@@ -13,7 +13,7 @@
 - PostgreSQL
 - Docker Compose for local infrastructure
 
-The active backend entry point is `backend/app/main.py`. The previous Bun/Elysia/Kysely source is still present in `backend/src/` during this migration and should be removed or moved to a legacy directory before merging.
+The active backend entry point is `backend/app/main.py`. The previous Bun/Elysia/Kysely implementation is retained under `backend_bun/` for reference; it is not the active service.
 
 ## High-level architecture
 
@@ -103,7 +103,7 @@ Durations in API and tool contracts are numeric seconds.
 
 ## AI and realtime status
 
-AI schemas are being migrated to Pydantic. The existing TypeScript AI provider and service are placeholders rather than a production LLM integration. SSE/realtime endpoints are not yet implemented in the active FastAPI application; they must be added as a separate, tested migration step if required by the frontend contract.
+AI schemas are being migrated to Pydantic. The previous TypeScript AI provider/service are placeholders rather than a production LLM integration. SSE/realtime endpoints are not implemented in the active FastAPI application; add them as a separate, tested migration step if required by the frontend contract.
 
 ## Migrations
 
