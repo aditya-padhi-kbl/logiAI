@@ -358,7 +358,7 @@ What happened after execution?
 - Shipment event simulation
 - SSE updates
 
-The previous Python/FastAPI implementation is retained under `backend_python/` for reference only.
+The active backend is Python/FastAPI under `backend/`. The former Bun/Elysia/Kysely implementation is retained under `backend_bun/` for reference only.
 
 ## 15. Non-Goals
 
