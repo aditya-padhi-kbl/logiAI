@@ -1,0 +1,48 @@
+name: Python backend
+
+on:
+  pull_request:
+    paths:
+      - "backend/**"
+      - "compose.yml"
+      - ".github/workflows/backend-python.yml"
+  push:
+    branches: [main]
+    paths:
+      - "backend/**"
+      - "compose.yml"
+      - ".github/workflows/backend-python.yml"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: logiai
+          POSTGRES_PASSWORD: logiai
+          POSTGRES_DB: logiai
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U logiai -d logiai"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    defaults:
+      run:
+        working-directory: backend
+    env:
+      DATABASE_URL: postgresql+asyncpg://logiai:logiai@localhost:5432/logiai
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install --upgrade pip
+      - run: pip install -e ".[dev]"
+      - run: alembic upgrade head
+      - run: pytest
+      - run: pyright
+      - run: ruff check .
