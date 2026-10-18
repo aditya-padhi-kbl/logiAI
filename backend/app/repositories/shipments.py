@@ -93,7 +93,7 @@ class ShipmentRepository:
         ).mappings().one_or_none()
         return self._response(dict(row)) if row else None
 
-    async def list(
+    async def list_shipments(
         self,
         session: AsyncSession,
         page: int,
