@@ -3,8 +3,8 @@ from typing import Any
 from uuid import UUID, uuid4
 
 from sqlalchemy import func, insert, select, update
-from sqlalchemy.sql import Select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.sql import Select
 
 from app.db.tables import party, shipment, shipment_event
 from app.schemas.shipment import (
@@ -17,7 +17,7 @@ from app.schemas.shipment import (
 
 class ShipmentRepository:
     @staticmethod
-    def _joined() -> Select[Any]:
+    def _joined() -> Select[Any, Any]:
         sender = party.alias("sender")
         receiver = party.alias("receiver")
         return (
