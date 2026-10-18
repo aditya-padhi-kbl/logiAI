@@ -1,62 +1,51 @@
 # LogiAI Backend
 
-Bun + Elysia + Kysely + PostgreSQL + TypeBox.
-
-The backend is a modular monolith. HTTP routes delegate to application services, services own business logic and transaction boundaries, and repositories handle persistence through Kysely.
-
-## Structure
-
-```text
-backend/
-├── src/
-│   ├── config/
-│   ├── db/
-│   │   └── migrations/
-│   ├── repositories/
-│   ├── routes/
-│   ├── schemas/
-│   └── services/
-├── AGENTS.md
-├── package.json
-├── tsconfig.json
-└── README.md
-```
-
-See [`AGENTS.md`](./AGENTS.md) for backend engineering rules.
+Python 3.12+ · FastAPI · Pydantic v2 · SQLAlchemy Core · asyncpg · Alembic.
 
 ## Architecture
 
 ```text
-Elysia routes
-      ↓
-Application services
-      ↓
-Repositories
-      ↓
-Kysely
-      ↓
-PostgreSQL
+FastAPI routes → Pydantic contracts → Application services
+                                     ↓
+                              SQLAlchemy Core
+                                     ↓
+                                 PostgreSQL
 ```
 
-AI tools must call application services rather than accessing Kysely directly.
+- Pydantic validates request bodies, response models, configuration, and untrusted AI/external payloads.
+- Pyright strict mode checks internal types; it complements rather than replaces runtime validation.
+- SQLAlchemy Core provides composable SQL queries without ORM entity models.
+- Services own transaction boundaries; repositories own persistence queries.
+- Shipment creation writes the shipment and its `CREATED` event atomically.
+- Status changes lock the shipment row using `SELECT ... FOR UPDATE`, enforce the transition graph, and append an event in the same transaction.
+- Datetimes crossing API boundaries must be timezone-aware.
 
-## Transactions
+## Run locally
 
-Services own transaction boundaries. Shipment creation writes the shipment and its `CREATED` event atomically. Status changes lock the shipment row with `SELECT ... FOR UPDATE`, validate the domain transition, update `shipment.status`, and append the corresponding `shipment_event` in the same transaction.
-
-## Date and time
-
-PostgreSQL timestamps use `timestamptz`. Datetimes crossing system boundaries use ISO-8601 with timezone information. The backend does not localize or convert timestamps for presentation; timezone conversion is a frontend concern.
-
-## Validation
-
-TypeBox schemas define runtime validation contracts at application boundaries, including API and AI-generated data. TypeScript provides compile-time type safety.
-
-## Commands
+From the repository root, start PostgreSQL with the required `DB_NAME`, `DB_USER`, and `DB_PASSWORD` variables:
 
 ```bash
-bun install
-bun run migrate
-bun run dev
-bun test
+docker compose -f compose.yml up postgres
 ```
+
+Then from `backend/`:
+
+```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -e '.[dev]'
+alembic upgrade head
+uvicorn app.main:app --reload
+```
+
+## Checks
+
+```bash
+pytest
+pyright
+ruff check .
+```
+
+OpenAPI UI: http://localhost:8000/docs
+
+The baseline Alembic revision is non-destructive and creates missing tables only. Inspect schema differences before adding future migrations against existing databases.
