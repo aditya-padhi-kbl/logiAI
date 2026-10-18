@@ -1,6 +1,6 @@
 # LogiAI AI Contract
 
-The AI layer uses structured, machine-readable responses. The Bun/Elysia backend uses TypeBox schemas to validate model output before returning it to the frontend.
+The AI layer should use structured, machine-readable responses. The active backend is FastAPI/Python; Pydantic v2 is the required runtime validator for model output before it reaches business logic or the frontend. The response shapes below are conceptual contracts, not a claim that the full AI integration is already implemented.
 
 ## Response contract
 
@@ -16,7 +16,7 @@ const AIResponse = t.Union([
 ]);
 ```
 
-TypeScript types can be derived from TypeBox schemas with `Static<typeof Schema>`.
+Python request/response contracts should be represented by Pydantic v2 models. Pyright strict mode complements runtime validation but does not replace it.
 
 ### Text response
 
@@ -107,11 +107,11 @@ Groq
   ↓
 Raw model output
   ↓
-TypeBox validation
+Pydantic validation
   ↓
 Validated AIResponse
   ↓
-Elysia API
+FastAPI API
   ↓
 Next.js
 ```
@@ -132,7 +132,7 @@ Final consequential actions require explicit human approval.
 
 ## Tool boundary
 
-The LLM has access to controlled application tools. Tools must call application services rather than Kysely directly.
+The LLM has access to controlled application tools. Tools must call application services rather than repositories or SQLAlchemy sessions directly.
 
 ### Read tools
 
@@ -163,9 +163,9 @@ AI Tool Registry
     ↓
 Application Services
     ↓
-Repositories / Kysely
+Repositories / SQLAlchemy Core
     ↓
 PostgreSQL
 ```
 
-The LLM never receives database credentials or unrestricted database access.
+The LLM never receives database credentials or unrestricted database access. The current backend has not yet implemented the production LLM provider or tool registry; these are planned components.
