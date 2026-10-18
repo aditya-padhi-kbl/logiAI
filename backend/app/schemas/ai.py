@@ -1,6 +1,6 @@
 from pydantic import AwareDatetime, Field
 from app.schemas.common import StrictModel
-from app.schemas.shipment import ShipmentResponse, ShipmentEventResponse, ShipmentStatus
+from app.schemas.shipment import ShipmentEventResponse, ShipmentResponse, ShipmentStatus
 
 class StageDuration(StrictModel):
     duration_seconds: float = Field(ge=0)
@@ -10,7 +10,7 @@ class StageDuration(StrictModel):
 class DelayedPeriod(StrictModel):
     started_at: AwareDatetime
     ended_at: AwareDatetime | None
-    duration_seconds: float | None = Field(default=None, ge=0)
+    duration: float | None = Field(default=None, ge=0)
 
 class ShipmentTimeline(StrictModel):
     stagedDurations: list[StageDuration]
