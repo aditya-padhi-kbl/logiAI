@@ -2,7 +2,7 @@ Metadata-Version: 2.4
 Name: logiai-backend
 Version: 0.1.0
 Summary: LogiAI logistics operations API
-Requires-Python: >=3.12
+Requires-Python: <3.16,>=3.15
 Requires-Dist: fastapi<1,>=0.116
 Requires-Dist: uvicorn[standard]<1,>=0.35
 Requires-Dist: pydantic<3,>=2.11
