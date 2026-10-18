@@ -3,90 +3,59 @@
 ## Technology
 
 - Next.js + TypeScript frontend
-- Bun + TypeScript backend runtime
-- Elysia for HTTP APIs and SSE
-- TypeBox for runtime schemas and validation at application boundaries
-- Kysely for type-safe SQL and database access
+- Python 3.12+ backend
+- FastAPI for HTTP APIs and OpenAPI
+- Pydantic v2 for runtime validation at request, response, AI and external-data boundaries
+- Pyright strict mode for static type checking
+- SQLAlchemy Core for composable SQL queries (no ORM entity models)
+- asyncpg for asynchronous PostgreSQL access
+- Alembic for schema migrations
 - PostgreSQL
-- Groq for structured AI reasoning and tool calling
-- SSE for realtime updates
-- Docker for local infrastructure
+- Docker Compose for local infrastructure
 
-The active application is the TypeScript backend under `backend/`. The previous Python implementation is retained under `backend_python/` as a reference only.
+The active backend entry point is `backend/app/main.py`. The previous Bun/Elysia/Kysely source is still present in `backend/src/` during this migration and should be removed or moved to a legacy directory before merging.
 
 ## High-level architecture
 
 ```text
 Next.js
-   │
-   │ REST + SSE
+   │ REST
    ▼
-Bun / Elysia
-   │
-   ├── API routes
+FastAPI
+   ├── Pydantic request/response contracts
    ├── Application services
-   ├── Deterministic risk engine
-   ├── AI tool registry
-   ├── Groq integration
-   └── Action executor
+   ├── Domain transition rules
+   └── AI integration contracts
           │
           ▼
-        Kysely
+    SQLAlchemy Core
           │
           ▼
       PostgreSQL
 ```
 
-The AI never accesses PostgreSQL directly:
-
-```text
-Groq Agent
-    ↓
-AI Tool Registry
-    ↓
-Application Services
-    ↓
-Repositories / Kysely
-    ↓
-PostgreSQL
-```
+AI components must access operational data through controlled application services, never through direct database access.
 
 ## Backend layering
 
 ```text
-HTTP / Elysia routes
-        ↓
-Application Services
-        ↓
-Domain logic
-        ↓
-Repositories / Kysely
-        ↓
+FastAPI routes
+      ↓
+Pydantic contracts
+      ↓
+Application services
+      ↓
+Repositories / SQLAlchemy Core
+      ↓
 PostgreSQL
 ```
 
 - Routes are thin HTTP adapters.
+- Pydantic models validate untrusted payloads at runtime.
 - Services own business logic and transaction boundaries.
-- Repositories own persistence and queries.
-- AI tools call application services rather than repositories or Kysely directly.
-
-## Dependency composition
-
-Infrastructure dependencies are created at application startup and composed explicitly into repositories and services.
-
-```text
-Application startup
-       ↓
-Kysely database instance
-       ↓
-Repositories
-       ↓
-Application services
-       ↓
-Elysia routes
-```
-
-Keep the backend as a modular monolith for the MVP. Do not introduce microservices without a concrete requirement.
+- Repositories own persistence queries.
+- SQLAlchemy Core builds parameterized SQL; it is not used as an ORM.
+- Pyright checks internal annotations statically. It does not replace Pydantic runtime validation.
 
 ## Shipment state and events
 
@@ -109,48 +78,33 @@ Change status
     ↓
 BEGIN
     ├── SELECT shipment ... FOR UPDATE
-    ├── Validate domain transition
+    ├── Validate allowed transition
     ├── UPDATE shipment.status
     └── INSERT shipment_event
     ↓
 COMMIT
 ```
 
-A successful state transition and its corresponding event must commit together.
+A successful state transition and its corresponding event must commit together. The current Python implementation keeps both operations in the same request transaction and uses `SELECT ... FOR UPDATE` to serialize competing transitions.
 
 ## Validation
 
-TypeBox schemas define runtime validation contracts for untrusted external data and AI-generated data. TypeScript provides compile-time type safety.
+- HTTP input and output use Pydantic v2 models.
+- LLM/tool arguments and outputs must be validated before business logic or tool execution.
+- External API responses and environment configuration must be validated at ingestion.
+- Pyright runs in strict mode to catch internal type mismatches before execution.
+- PostgreSQL constraints remain the final integrity guard for persisted data.
 
 ## Date and time
 
-PostgreSQL timestamps use `timestamptz`. Date and datetime values crossing system boundaries use ISO-8601 with timezone information. The backend preserves the instant and does not localize timestamps for presentation. The frontend owns user-local timezone presentation.
+PostgreSQL timestamps use `timestamptz`. Datetimes crossing system boundaries use ISO-8601 with timezone information. The backend preserves the instant and does not localize timestamps for presentation. The frontend owns user-local timezone presentation.
 
 Durations in API and tool contracts are numeric seconds.
 
-## Risk engine
+## AI and realtime status
 
-Risk scoring is deterministic and remains in the backend. AI explains evidence and produces recommendations; it does not become the source of truth for operational calculations.
+AI schemas are being migrated to Pydantic. The existing TypeScript AI provider and service are placeholders rather than a production LLM integration. SSE/realtime endpoints are not yet implemented in the active FastAPI application; they must be added as a separate, tested migration step if required by the frontend contract.
 
-## AI tools
+## Migrations
 
-AI tools access controlled application services rather than Kysely directly. Read tools provide scoped operational context. Write tools require explicit human approval before consequential actions are executed.
-
-See [`ai-contract.md`](./ai-contract.md) for AI response and tool contracts.
-
-## Realtime
-
-Shipment events are published through SSE:
-
-```text
-Event Simulator → Bun / Elysia → SSE → Next.js
-```
-
-## Security principles
-
-- Never expose the Groq API key to Next.js.
-- Validate untrusted API and AI inputs at the boundary.
-- Authorize consequential actions before execution.
-- Record AI recommendations and action approvals in an audit trail.
-- Keep database access inside the backend.
-- Do not let LLM-generated identifiers or filters bypass application-level authorization.
+Alembic is used for future schema changes. The initial baseline creates missing tables without dropping or altering existing tables. Because the original database may already be populated by Kysely migrations, compare the live schema with SQLAlchemy metadata before introducing schema-altering revisions.
