@@ -103,7 +103,7 @@ Durations in API and tool contracts are numeric seconds.
 
 ## AI and realtime status
 
-AI schemas are being migrated to Pydantic. The previous TypeScript AI provider/service are placeholders rather than a production LLM integration. SSE/realtime endpoints are not implemented in the active FastAPI application; add them as a separate, tested migration step if required by the frontend contract.
+Pydantic AI contract models have been started, but the production LLM provider, tool registry, and investigation workflow are not implemented yet. SSE/realtime endpoints are also not implemented in the active FastAPI application. Treat these as planned work, not existing capabilities.
 
 ## Migrations
 
