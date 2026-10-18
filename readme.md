@@ -69,7 +69,7 @@ GET    /api/shipments/{shipment_id}/shipmentEvents
 GET    /health
 ```
 
-FastAPI's OpenAPI documentation is available at `/docs`. SSE/realtime endpoints are not implemented in this migration branch.
+FastAPI's OpenAPI documentation is available at `/docs`. SSE/realtime endpoints are not implemented in the current FastAPI application; see the roadmap for planned work.
 
 ## Local development
 
