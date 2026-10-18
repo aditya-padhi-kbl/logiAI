@@ -47,7 +47,7 @@ class ShipmentService:
         return await self.shipments.get_by_id(session, shipment_id)
 
     async def list_shipments(self, session: AsyncSession, page: int, page_size: int, status: ShipmentStatus | None) -> ShipmentListResponse:
-        items, total = await self.shipments.list(session, page, page_size, status)
+        items, total = await self.shipments.list_shipments(session, page, page_size, status)
         return ShipmentListResponse(items=items, page=page, page_size=page_size, total=total)
 
     async def update_status(self, session: AsyncSession, shipment_id: UUID, new_status: ShipmentStatus) -> None:
