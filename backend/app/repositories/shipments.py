@@ -17,7 +17,7 @@ from app.schemas.shipment import (
 
 class ShipmentRepository:
     @staticmethod
-    def _joined() -> Select[Any, Any]:
+    def _joined() -> Select[Any, Any, Any, Any, Any, Any, Any, Any]:
         sender = party.alias("sender")
         receiver = party.alias("receiver")
         return (
