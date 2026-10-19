@@ -1,6 +1,6 @@
 # LogiAI Backend
 
-Python 3.12+ · FastAPI · Pydantic v2 · SQLAlchemy Core · asyncpg · Alembic.
+Python 3.15.0 · FastAPI · Pydantic v2 · SQLAlchemy Core · asyncpg · Alembic.
 
 ## Architecture
 

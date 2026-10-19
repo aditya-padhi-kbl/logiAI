@@ -26,13 +26,15 @@ FastAPI
 ## Technology
 
 ### Frontend
+
 - Next.js and TypeScript
 - TanStack Query
 - RxJS where shared realtime streams are useful
 - Tailwind CSS / MUI
 
 ### Backend
-- Python 3.12+
+
+- Python 3.15.0
 - FastAPI
 - Pydantic v2 and Pydantic Settings
 - SQLAlchemy Core with async execution

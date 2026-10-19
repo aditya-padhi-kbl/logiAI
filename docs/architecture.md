@@ -3,7 +3,7 @@
 ## Technology
 
 - Next.js + TypeScript frontend
-- Python 3.12+ backend
+- Python 3.15.0 backend
 - FastAPI for HTTP APIs and OpenAPI
 - Pydantic v2 for runtime validation at request, response, AI and external-data boundaries
 - Pyright strict mode for static type checking
