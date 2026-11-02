@@ -6,7 +6,10 @@ from app.schemas.party import PartyCreate, PartyResponse
 
 class PartyRepository:
     async def create(self, session: AsyncSession, payload: PartyCreate) -> PartyResponse:
-        row = (await session.execute(insert(party).values(**payload.model_dump()).returning(*party.c))).mappings().one()
+        row = (await session.execute(
+            insert(party)
+            .values(**payload.model_dump())
+            .returning(*party.c))).mappings().one()
         return PartyResponse.model_validate(dict(row))
 
     async def get_by_id(self, session: AsyncSession, party_id: UUID) -> PartyResponse | None:
