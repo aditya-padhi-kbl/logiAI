@@ -34,7 +34,7 @@ FastAPI
 
 ### Backend
 
-- Python 3.15
+- Python 3.15.2 (pinned via `backend/.python-version`)
 - [uv](https://docs.astral.sh/uv/) for Python version, virtual environment, dependency and command management
 - FastAPI
 - Pydantic v2 and Pydantic Settings
@@ -147,10 +147,10 @@ Move into the backend directory:
 cd backend
 ```
 
-Install the Python 3.15 interpreter managed by uv:
+Install the pinned Python 3.15.2 interpreter managed by uv:
 
 ```bash
-uv python install 3.15
+uv python install 3.15.2
 ```
 
 Create/update the lock file if dependencies have changed, then install the project and its development dependencies:
