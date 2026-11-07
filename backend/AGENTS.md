@@ -4,7 +4,7 @@ These rules apply to the active Python backend under `backend/app/`.
 
 ## Stack
 
-- Python 3.15.0.
+- Python 3.15.2.
 - FastAPI for HTTP APIs and OpenAPI.
 - Pydantic v2 for runtime validation at every untrusted-data boundary.
 - SQLAlchemy Core with async execution for explicit SQL queries; do not introduce ORM entity models without an architectural decision.
