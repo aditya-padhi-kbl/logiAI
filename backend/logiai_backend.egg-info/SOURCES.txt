@@ -7,6 +7,7 @@ app/api/routes.py
 app/core/__init__.py
 app/core/config.py
 app/db/__init__.py
+app/db/seed.py
 app/db/session.py
 app/db/tables.py
 app/repositories/__init__.py
@@ -18,6 +19,7 @@ app/schemas/common.py
 app/schemas/party.py
 app/schemas/shipment.py
 app/services/__init__.py
+app/services/investigations.py
 app/services/shipments.py
 logiai_backend.egg-info/PKG-INFO
 logiai_backend.egg-info/SOURCES.txt

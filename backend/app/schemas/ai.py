@@ -13,8 +13,8 @@ class DelayedPeriod(StrictModel):
     duration: float | None = Field(default=None, ge=0)
 
 class ShipmentTimeline(StrictModel):
-    stagedDurations: list[StageDuration]
-    delayedPeriods: list[DelayedPeriod]
+    staged_durations: list[StageDuration]
+    delayed_periods: list[DelayedPeriod]
     events: list[ShipmentEventResponse]
 
 class AvailableShipmentContext(StrictModel):
