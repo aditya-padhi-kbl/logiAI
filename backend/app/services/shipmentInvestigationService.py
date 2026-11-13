@@ -19,6 +19,6 @@ class ShipmentInvestigationService:
         timelines: ShipmentTimeline = build_shipment_timelines(events)
 
         return AvailableShipmentContext(available=True,
-                                        timeline=ShipmentTimeline(staged_durations=timelines.staged_durations, delayed_periods=timelines.delayed_periods, events=events),
+                                        timeline=timelines,
                                         shipment=shipment
                                         )

@@ -2,13 +2,17 @@ from typing import Annotated
 from uuid import UUID
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
 from sqlalchemy.ext.asyncio import AsyncSession
+
 from app.db.session import get_session
 from app.schemas.party import PartyCreate, PartyResponse
 from app.schemas.shipment import ShipmentCreate, ShipmentEventResponse, ShipmentListResponse, ShipmentResponse, ShipmentStatus, ShipmentStatusUpdate
 from app.services.shipments import InvalidTransitionError, NotFoundError, ShipmentService
+from app.services.shipmentInvestigationService import ShipmentInvestigationService
+from app.schemas.ai import AvailableShipmentContext, UnavailableShipmentContext
 
 router = APIRouter(prefix="/api")
 service = ShipmentService()
+shipmentInvestigationService = ShipmentInvestigationService()
 SessionDep = Annotated[AsyncSession, Depends(get_session)]
 
 @router.post("/parties", response_model=PartyResponse, status_code=status.HTTP_201_CREATED)
@@ -63,3 +67,7 @@ async def get_shipment_events(shipment_id: UUID, session: SessionDep) -> list[Sh
     if await service.get_shipment(session, shipment_id) is None:
         raise HTTPException(status_code=404, detail="Shipment not found")
     return await service.get_events(session, shipment_id)
+
+@router.get("/shipments/{shipment_id}/investigation-context", response_model=AvailableShipmentContext | UnavailableShipmentContext)
+async def get_investigation_context(shipment_id: UUID, session: SessionDep):
+    return await shipmentInvestigationService.investigate(session, shipment_id)
